@@ -15,7 +15,7 @@ public class FluidApiKeys {
 	public static final ContextKey<Direction> SIDED = ContextKey.create(Direction.class, new Identifier("c", "sided"));
 	public static final BlockApiLookup<FluidInsertable, @NotNull Direction> SIDED_FLUID_INSERTABLE = BlockApiLookupRegistry.getLookup(FLUID_INSERTABLE_ID, SIDED);
 	public static final BlockApiLookup<FluidExtractable, @NotNull Direction> SIDED_FLUID_EXTRACTABLE = BlockApiLookupRegistry.getLookup(FLUID_EXTRACTABLE_ID, SIDED);
-	public static final BlockApiLookup<FluidExtractable, Void> BLOCK_FLUID_VIEW = BlockApiLookupRegistry.getLookup(FLUID_VIEW_ID, ContextKey.NO_CONTEXT);
+	public static final BlockApiLookup<FluidView, Void> BLOCK_FLUID_VIEW = BlockApiLookupRegistry.getLookup(FLUID_VIEW_ID, ContextKey.NO_CONTEXT);
 
 	private FluidApiKeys(){}
 }
