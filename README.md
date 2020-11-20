@@ -1,4 +1,6 @@
-# Fabric Example Mod
+# Cursed Fluid API
+
+All longs are in U unless marked otherwise. The unit U is 1/81000th of a bucket.
 
 ## Setup
 
@@ -6,4 +8,4 @@ For setup instructions please see the [fabric wiki page](https://fabricmc.net/wi
 
 ## License
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+This api is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
