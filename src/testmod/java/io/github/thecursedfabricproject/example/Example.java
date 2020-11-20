@@ -9,7 +9,8 @@ public class Example implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-        Registry.register(Registry.ITEM, new Identifier("e", "measuring_stick"), new MeasuringStick(new Item.Settings()));
+		Registry.register(Registry.ITEM, new Identifier("e", "measuring_stick"), new MeasuringStick(new Item.Settings()));
+		Registry.register(Registry.ITEM, new Identifier("e", "yeet_stick"), new YeetStick(new Item.Settings()));
 	}
     
 }
