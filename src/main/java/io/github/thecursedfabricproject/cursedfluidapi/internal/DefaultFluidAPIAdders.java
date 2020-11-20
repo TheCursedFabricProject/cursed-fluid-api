@@ -9,7 +9,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CauldronBlock;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.WaterFluid;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
@@ -20,44 +19,42 @@ public class DefaultFluidAPIAdders implements ModInitializer {
     public void onInitialize() {
         //Cauldron
         FluidApiKeys.SIDED_FLUID_INSERTABLE.registerForBlocks(
-            (world, pos, side) -> {
-                return new FluidInsertable(){
-                        @Override
-                        public long insertFluid(long amount, Identifier fluidkey, boolean simulation) {
-                            BlockState state = world.getBlockState(pos);
-                            int level = state.get(CauldronBlock.LEVEL);
-                            if (level == 3) return amount;
-                            if (level <= 2) {
-                                if (amount <= level * 27000) {
-                                    amount -= 27000;
-                                    level += 1;
-                                } else {
-                                    return amount;
-                                }
+            (world, pos, side) -> new FluidInsertable(){
+                    @Override
+                    public long insertFluid(long amount, Identifier fluidkey, boolean simulation) {
+                        BlockState state = world.getBlockState(pos);
+                        int level = state.get(CauldronBlock.LEVEL);
+                        if (level == 3) return amount;
+                        if (level <= 2) {
+                            if (amount <= level * 27000) {
+                                amount -= 27000;
+                                level += 1;
+                            } else {
+                                return amount;
                             }
-                            if (level <= 1) {
-                                if (amount <= level * 27000) {
-                                    amount -= 27000;
-                                    level += 1;
-                                } else {
-                                    if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
-                                    return amount;
-                                }
-                            }
-                            if (level == 0) {
-                                if (amount <= level * 27000) {
-                                    amount -= 27000;
-                                    level += 1;
-                                } else {
-                                    if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
-                                    return amount;
-                                }
-                            }
-                            if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
-                            return amount;
                         }
-                };
-            },
+                        if (level <= 1) {
+                            if (amount <= level * 27000) {
+                                amount -= 27000;
+                                level += 1;
+                            } else {
+                                if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
+                                return amount;
+                            }
+                        }
+                        if (level == 0) {
+                            if (amount <= level * 27000) {
+                                amount -= 27000;
+                                level += 1;
+                            } else {
+                                if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
+                                return amount;
+                            }
+                        }
+                        if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
+                        return amount;
+                    }
+                },
             Blocks.CAULDRON
         );
         FluidApiKeys.BLOCK_FLUID_VIEW.registerForBlocks((world, pos, side) -> new FluidView(){
