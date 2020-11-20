@@ -21,9 +21,9 @@ public class YeetStick extends Item {
         FluidExtractable extractable = FluidApiKeys.SIDED_FLUID_EXTRACTABLE.get(context.getWorld(), context.getBlockPos(), context.getSide());
         if (extractable != null && !context.getWorld().isClient) {
             Identifier fluidKey = extractable.getFluidKey();
-            long extractedammount = extractable.getFluidamount(54000, fluidKey, false);
-            if (extractedammount > 0) {
-                System.out.printf("Extracted %d %s%n", extractedammount, fluidKey.toString());
+            long extractedAmmount = extractable.extractFluidAmount(54000, fluidKey, false);
+            if (extractedAmmount > 0) {
+                System.out.printf("Extracted %d %s%n", extractedAmmount, fluidKey.toString());
             }
             return ActionResult.SUCCESS;
         }
