@@ -83,9 +83,10 @@ public class DefaultFluidAPIAdders implements ModInitializer {
                 BlockState state = world.getBlockState(pos);
                 int level = state.get(CauldronBlock.LEVEL);
                 int maxextractlevel = (int) MathHelper.clamp((long)Math.floor((double)maxamount / 27000.0), 0l, 3l);
-                int extract = MathHelper.clamp(level, 0, maxextractlevel);
-                if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, extract);
-                return extract;
+                int extractlevel = MathHelper.clamp(level, 0, maxextractlevel);
+                level -= extractlevel;
+                if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
+                return extractlevel * 27000l;
             }
             
         }, Blocks.CAULDRON);
