@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "cursed-fluid-api",
   "version": "${version}",
 
   "name": "Example Mod",
@@ -17,13 +17,8 @@
   "icon": "assets/modid/icon.png",
 
   "environment": "*",
-  "entrypoints": {
-    "main": [
-      "net.fabricmc.example.ExampleMod"
-    ]
-  },
   "mixins": [
-    "modid.mixins.json"
+    "cursed-fluid-api.mixins.json"
   ],
 
   "depends": {
