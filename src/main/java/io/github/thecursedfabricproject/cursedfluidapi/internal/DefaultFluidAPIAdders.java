@@ -1,5 +1,6 @@
 package io.github.thecursedfabricproject.cursedfluidapi.internal;
 
+import io.github.thecursedfabricproject.Constant;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidApiKeys;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidInsertable;
@@ -19,23 +20,23 @@ public class DefaultFluidAPIAdders implements ModInitializer {
     public void onInitialize() {
         //Cauldron
         FluidApiKeys.SIDED_FLUID_INSERTABLE.registerForBlocks(
-            (world, pos, side) -> new FluidInsertable(){
+            (world, pos, side) -> new FluidInsertable() {
                     @Override
-                    public long insertFluid(long amount, Identifier fluidkey, boolean simulation) {
+                    public long insertFluid(long amount, Identifier fluidKey, boolean simulation) {
                         BlockState state = world.getBlockState(pos);
                         int level = state.get(CauldronBlock.LEVEL);
                         if (level == 3) return amount;
                         if (level <= 2) {
-                            if (amount <= level * 27000) {
-                                amount -= 27000;
+                            if (amount <= level * Constant.BOTTLE) {
+                                amount -= Constant.BOTTLE;
                                 level += 1;
                             } else {
                                 return amount;
                             }
                         }
                         if (level <= 1) {
-                            if (amount <= level * 27000) {
-                                amount -= 27000;
+                            if (amount <= level * Constant.BOTTLE) {
+                                amount -= Constant.BOTTLE;
                                 level += 1;
                             } else {
                                 if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
@@ -43,8 +44,8 @@ public class DefaultFluidAPIAdders implements ModInitializer {
                             }
                         }
                         if (level == 0) {
-                            if (amount <= level * 27000) {
-                                amount -= 27000;
+                            if (amount <= level * Constant.BOTTLE) {
+                                amount -= Constant.BOTTLE;
                                 level += 1;
                             } else {
                                 if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
@@ -66,7 +67,7 @@ public class DefaultFluidAPIAdders implements ModInitializer {
 
             @Override
             public long getFluidamount() {
-                return ((long)world.getBlockState(pos).get(CauldronBlock.LEVEL)) * 27000l;
+                return ((long)world.getBlockState(pos).get(CauldronBlock.LEVEL)) * Constant.BOTTLE;
             }
             
         }, Blocks.CAULDRON);
@@ -79,14 +80,14 @@ public class DefaultFluidAPIAdders implements ModInitializer {
             }
 
             @Override
-            public long extractFluidAmount(long maxamount, Identifier fluidKey, boolean simulation) {
+            public long extractFluidAmount(long maxAmount, Identifier fluidKey, boolean simulation) {
                 BlockState state = world.getBlockState(pos);
                 int level = state.get(CauldronBlock.LEVEL);
-                int maxExtractLevel = (int) MathHelper.clamp((long)Math.floor((double)maxamount / 27000.0), 0l, 3l);
+                int maxExtractLevel = (int)MathHelper.clamp((long)Math.floor((double)maxAmount / (double)Constant.BOTTLE), 0l, 3l);
                 int extractLevel = MathHelper.clamp(level, 0, maxExtractLevel);
                 level -= extractLevel;
                 if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
-                return extractLevel * 27000l;
+                return extractLevel * Constant.BOTTLE;
             }
             
         }, Blocks.CAULDRON);
