@@ -1,6 +1,7 @@
 package io.github.thecursedfabricproject.cursedfluidapi.internal;
 
 import io.github.thecursedfabricproject.cursedfluidapi.FluidApiKeys;
+import io.github.thecursedfabricproject.cursedfluidapi.FluidConstants;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidInsertable;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidView;
@@ -28,16 +29,16 @@ public class DefaultFluidAPIAdders implements ModInitializer {
                         int level = originallevel;
                         if (originallevel == 3) return amount;
                         if (originallevel <= 2) {
-                            if (amount - 27000 >= 0 && level < 3) {
-                                amount -= 27000;
+                            if (amount - FluidConstants.BOTTLE >= 0 && level < 3) {
+                                amount -= FluidConstants.BOTTLE;
                                 level += 1;
                             } else {
                                 return amount;
                             }
                         }
                         if (originallevel <= 1) {
-                            if (amount - 27000 >= 0 && level < 3) {
-                                amount -= 27000;
+                            if (amount - FluidConstants.BOTTLE >= 0 && level < 3) {
+                                amount -= FluidConstants.BOTTLE;
                                 level += 1;
                             } else {
                                 if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
@@ -45,8 +46,8 @@ public class DefaultFluidAPIAdders implements ModInitializer {
                             }
                         }
                         if (originallevel == 0) {
-                            if (amount - 27000 >= 0 && level < 3) {
-                                amount -= 27000;
+                            if (amount - FluidConstants.BOTTLE >= 0 && level < 3) {
+                                amount -= FluidConstants.BOTTLE;
                                 level += 1;
                             } else {
                                 if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
@@ -68,7 +69,7 @@ public class DefaultFluidAPIAdders implements ModInitializer {
 
             @Override
             public long getFluidamount() {
-                return ((long)world.getBlockState(pos).get(CauldronBlock.LEVEL)) * 27000l;
+                return ((long)world.getBlockState(pos).get(CauldronBlock.LEVEL)) * FluidConstants.BOTTLE;
             }
             
         }, Blocks.CAULDRON);
@@ -84,11 +85,11 @@ public class DefaultFluidAPIAdders implements ModInitializer {
             public long extractFluidAmount(long maxamount, Identifier fluidKey, boolean simulation) {
                 BlockState state = world.getBlockState(pos);
                 int level = state.get(CauldronBlock.LEVEL);
-                int maxExtractLevel = (int) MathHelper.clamp((long)Math.floor((double)maxamount / 27000.0), 0l, 3l);
+                int maxExtractLevel = (int) MathHelper.clamp((long)Math.floor((double)maxamount / (double)FluidConstants.BOTTLE), 0l, 3l);
                 int extractLevel = MathHelper.clamp(level, 0, maxExtractLevel);
                 level -= extractLevel;
                 if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
-                return extractLevel * 27000l;
+                return extractLevel * FluidConstants.BOTTLE;
             }
             
         }, Blocks.CAULDRON);
