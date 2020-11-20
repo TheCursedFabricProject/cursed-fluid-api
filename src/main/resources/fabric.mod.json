@@ -15,7 +15,7 @@
   "icon": "assets/modid/icon.png",
   "entrypoints": {
     "main": [
-      "io.github.cursedfabricproject.cursedfluidapi.internal.DefaultFluidAPIAdders"
+      "io.github.thecursedfabricproject.cursedfluidapi.internal.DefaultFluidAPIAdders"
     ]
   },
   "environment": "*",

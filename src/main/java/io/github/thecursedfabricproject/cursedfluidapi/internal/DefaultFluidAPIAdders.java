@@ -1,9 +1,9 @@
-package io.github.cursedfabricproject.cursedfluidapi.internal;
+package io.github.thecursedfabricproject.cursedfluidapi.internal;
 
-import io.github.cursedfabricproject.cursedfluidapi.FluidApiKeys;
-import io.github.cursedfabricproject.cursedfluidapi.FluidExtractable;
-import io.github.cursedfabricproject.cursedfluidapi.FluidInsertable;
-import io.github.cursedfabricproject.cursedfluidapi.FluidView;
+import io.github.thecursedfabricproject.cursedfluidapi.FluidApiKeys;
+import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
+import io.github.thecursedfabricproject.cursedfluidapi.FluidInsertable;
+import io.github.thecursedfabricproject.cursedfluidapi.FluidView;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

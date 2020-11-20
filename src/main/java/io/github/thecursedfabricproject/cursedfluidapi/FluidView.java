@@ -1,4 +1,4 @@
-package io.github.cursedfabricproject.cursedfluidapi;
+package io.github.thecursedfabricproject.cursedfluidapi;
 
 import java.util.Collections;
 import java.util.List;

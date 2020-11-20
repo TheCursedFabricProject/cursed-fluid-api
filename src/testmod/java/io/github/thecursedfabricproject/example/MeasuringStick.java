@@ -1,7 +1,7 @@
 package io.github.thecursedfabricproject.example;
 
-import io.github.cursedfabricproject.cursedfluidapi.FluidApiKeys;
-import io.github.cursedfabricproject.cursedfluidapi.FluidView;
+import io.github.thecursedfabricproject.cursedfluidapi.FluidApiKeys;
+import io.github.thecursedfabricproject.cursedfluidapi.FluidView;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.util.ActionResult;

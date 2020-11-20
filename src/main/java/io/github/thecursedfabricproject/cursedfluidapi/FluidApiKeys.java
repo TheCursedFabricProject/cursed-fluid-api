@@ -1,4 +1,4 @@
-package io.github.cursedfabricproject.cursedfluidapi;
+package io.github.thecursedfabricproject.cursedfluidapi;
 
 import org.jetbrains.annotations.NotNull;
 
