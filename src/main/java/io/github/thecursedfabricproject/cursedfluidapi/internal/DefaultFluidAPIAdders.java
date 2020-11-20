@@ -22,19 +22,21 @@ public class DefaultFluidAPIAdders implements ModInitializer {
             (world, pos, side) -> new FluidInsertable(){
                     @Override
                     public long insertFluid(long amount, Identifier fluidkey, boolean simulation) {
+                        if (!fluidkey.equals(Registry.FLUID.getId(Fluids.WATER))) return amount;
                         BlockState state = world.getBlockState(pos);
-                        int level = state.get(CauldronBlock.LEVEL);
-                        if (level == 3) return amount;
-                        if (level <= 2) {
-                            if (amount <= level * 27000) {
+                        int originallevel = state.get(CauldronBlock.LEVEL);
+                        int level = originallevel;
+                        if (originallevel == 3) return amount;
+                        if (originallevel <= 2) {
+                            if (amount - 27000 >= 0 && level < 3) {
                                 amount -= 27000;
                                 level += 1;
                             } else {
                                 return amount;
                             }
                         }
-                        if (level <= 1) {
-                            if (amount <= level * 27000) {
+                        if (originallevel <= 1) {
+                            if (amount - 27000 >= 0 && level < 3) {
                                 amount -= 27000;
                                 level += 1;
                             } else {
@@ -42,8 +44,8 @@ public class DefaultFluidAPIAdders implements ModInitializer {
                                 return amount;
                             }
                         }
-                        if (level == 0) {
-                            if (amount <= level * 27000) {
+                        if (originallevel == 0) {
+                            if (amount - 27000 >= 0 && level < 3) {
                                 amount -= 27000;
                                 level += 1;
                             } else {
