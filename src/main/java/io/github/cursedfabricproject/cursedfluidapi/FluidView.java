@@ -7,8 +7,8 @@ import net.minecraft.util.Identifier;
 
 public interface FluidView {
     public Identifier getFluidKey();
-    public long getFluidAmmount();
+    public long getFluidamount();
     public default List<Pair<Identifier, Long>> getAllFluids() {
-        return Collections.singletonList(new Pair<>(getFluidKey(), getFluidAmmount()));
+        return Collections.singletonList(new Pair<>(getFluidKey(), getFluidamount()));
     }
 }

@@ -23,38 +23,38 @@ public class DefaultFluidAPIAdders implements ModInitializer {
             (world, pos, side) -> {
                 return new FluidInsertable(){
                         @Override
-                        public long insertFluid(long ammount, Identifier fluidkey, boolean simulation) {
+                        public long insertFluid(long amount, Identifier fluidkey, boolean simulation) {
                             BlockState state = world.getBlockState(pos);
                             int level = state.get(CauldronBlock.LEVEL);
-                            if (level == 3) return ammount;
+                            if (level == 3) return amount;
                             if (level <= 2) {
-                                if (ammount <= level * 27000) {
-                                    ammount -= 27000;
+                                if (amount <= level * 27000) {
+                                    amount -= 27000;
                                     level += 1;
                                 } else {
-                                    return ammount;
+                                    return amount;
                                 }
                             }
                             if (level <= 1) {
-                                if (ammount <= level * 27000) {
-                                    ammount -= 27000;
+                                if (amount <= level * 27000) {
+                                    amount -= 27000;
                                     level += 1;
                                 } else {
                                     if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
-                                    return ammount;
+                                    return amount;
                                 }
                             }
                             if (level == 0) {
-                                if (ammount <= level * 27000) {
-                                    ammount -= 27000;
+                                if (amount <= level * 27000) {
+                                    amount -= 27000;
                                     level += 1;
                                 } else {
                                     if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
-                                    return ammount;
+                                    return amount;
                                 }
                             }
                             if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
-                            return ammount;
+                            return amount;
                         }
                 };
             },
@@ -68,7 +68,7 @@ public class DefaultFluidAPIAdders implements ModInitializer {
             }
 
             @Override
-            public long getFluidAmmount() {
+            public long getFluidamount() {
                 return ((long)world.getBlockState(pos).get(CauldronBlock.LEVEL)) * 27000l;
             }
             
@@ -82,10 +82,10 @@ public class DefaultFluidAPIAdders implements ModInitializer {
             }
 
             @Override
-            public long getFluidAmmount(long maxammount, Identifier fluidKey, boolean simulation) {
+            public long getFluidamount(long maxamount, Identifier fluidKey, boolean simulation) {
                 BlockState state = world.getBlockState(pos);
                 int level = state.get(CauldronBlock.LEVEL);
-                int maxextractlevel = (int) MathHelper.clamp((long)Math.floor((double)maxammount / 27000.0), 0l, 3l);
+                int maxextractlevel = (int) MathHelper.clamp((long)Math.floor((double)maxamount / 27000.0), 0l, 3l);
                 int extract = MathHelper.clamp(level, 0, maxextractlevel);
                 if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, extract);
                 return extract;

@@ -17,7 +17,7 @@ public class MeasuringStick extends Item {
         FluidView view = FluidApiKeys.BLOCK_FLUID_VIEW.get(context.getWorld(), context.getBlockPos(), null);
         if (view != null && !context.getWorld().isClient) {
             System.out.println(view.getFluidKey());
-            System.out.println(view.getFluidAmmount());
+            System.out.println(view.getFluidamount());
             return ActionResult.SUCCESS;
         }
         return super.useOnBlock(context);

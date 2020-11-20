@@ -4,5 +4,5 @@ import net.minecraft.util.Identifier;
 
 public interface FluidExtractable {
     public Identifier getFluidKey();
-    public long getFluidAmmount(long maxammount, Identifier fluidKey, boolean simulation);
+    public long getFluidamount(long maxamount, Identifier fluidKey, boolean simulation);
 }
