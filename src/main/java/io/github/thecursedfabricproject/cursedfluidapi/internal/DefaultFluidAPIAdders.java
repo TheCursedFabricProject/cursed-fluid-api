@@ -5,7 +5,9 @@ import io.github.thecursedfabricproject.cursedfluidapi.FluidConstants;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidInsertable;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidView;
+import io.github.thecursedfabricproject.cursedfluidapi.internal.lba.LBACompat;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CauldronBlock;
@@ -18,7 +20,11 @@ public class DefaultFluidAPIAdders implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        //Cauldron
+        //*LBA
+        if (FabricLoader.getInstance().isModLoaded("libblockattributes")) {
+            LBACompat.addLBACompat();
+        }
+        //*Cauldron
         FluidApiKeys.SIDED_FLUID_INSERTABLE.registerForBlocks(
             (world, pos, side) -> new FluidInsertable(){
                     @Override
