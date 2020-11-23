@@ -11,10 +11,10 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import io.github.fablabsmc.fablabs.api.provider.v1.ApiProviderMap;
-import io.github.fablabsmc.fablabs.api.provider.v1.ContextKey;
-import io.github.fablabsmc.fablabs.api.provider.v1.block.BlockApiLookup;
-import io.github.fablabsmc.fablabs.mixin.provider.BlockEntityTypeAccessor;
+import net.fabricmc.fabric.api.provider.v1.ApiProviderMap;
+import net.fabricmc.fabric.api.provider.v1.ContextKey;
+import net.fabricmc.fabric.api.provider.v1.block.BlockApiLookup;
+import net.fabricmc.fabric.mixin.provider.BlockEntityTypeAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
