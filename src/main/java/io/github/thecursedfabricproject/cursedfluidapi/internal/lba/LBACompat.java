@@ -108,7 +108,6 @@ public class LBACompat {
         return fluidKeyLookup.computeIfAbsent(id, yes -> {
             Optional<Fluid> a = Registry.FLUID.getOrEmpty(id);
             if (a.isPresent()) return FluidKeys.get(a.get());
-            
             return null;
         });
     }
@@ -123,12 +122,14 @@ public class LBACompat {
         @Override
         public long insertFluid(long amount, Identifier fluidkey, boolean simulation) {
             FluidAmount a = U_AMOUNT.mul(amount);
-            FluidVolume b = insertable.attemptInsertion(getLBAFluidKey(fluidkey).withAmount(a), Simulation.SIMULATE);
+            FluidKey lbaKey = getLBAFluidKey(fluidkey);
+            if (lbaKey == null) return amount;
+            FluidVolume b = insertable.attemptInsertion(lbaKey.withAmount(a), Simulation.SIMULATE);
             long c = amount - b.amount().asLong(FluidConstants.BLOCK, RoundingMode.DOWN);
-            FluidAmount d = insertable.attemptInsertion(getLBAFluidKey(fluidkey).withAmount(U_AMOUNT.mul(c)), Simulation.SIMULATE).amount();
+            FluidAmount d = insertable.attemptInsertion(lbaKey.withAmount(U_AMOUNT.mul(c)), Simulation.SIMULATE).amount();
             System.out.println(d.asLong(FluidConstants.BLOCK, RoundingMode.DOWN));
             if (0 == d.asLong(FluidConstants.BLOCK, RoundingMode.DOWN)) {
-                if (d.equals(insertable.attemptInsertion(getLBAFluidKey(fluidkey).withAmount(U_AMOUNT.mul(c)), simulation ? Simulation.SIMULATE : Simulation.ACTION).amount())) {
+                if (d.equals(insertable.attemptInsertion(lbaKey.withAmount(U_AMOUNT.mul(c)), simulation ? Simulation.SIMULATE : Simulation.ACTION).amount())) {
                     return amount - c;
                 } else {
                     screamAtModDeveloper.warn("{} Did something very strange (Error 1)", insertable.getClass());
