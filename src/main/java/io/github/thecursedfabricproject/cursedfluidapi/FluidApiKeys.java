@@ -20,7 +20,7 @@ public class FluidApiKeys {
 	public static final EnhancedBlockApiLookup<FluidExtractable, @NotNull Direction> SIDED_FLUID_EXTRACTABLE = new EnhancedBlockApiLookup<>(FLUID_EXTRACTABLE_ID, SIDED);
 	public static final BlockApiLookup<FluidView, Void> BLOCK_FLUID_VIEW = BlockApiLookupRegistry.getLookup(FLUID_VIEW_ID, ContextKey.NO_CONTEXT);
 	public static final EnhancedSingleItemApiLookup<ItemFluidInsertable, Void> ITEM_FLUID_INSERTABLE = new EnhancedSingleItemApiLookup<>(FLUID_INSERTABLE_ID, ContextKey.NO_CONTEXT);
-	public static final EnhancedSingleItemApiLookup<ItemFluidInsertable, Void> ITEM_FLUID_EXTRACTABLE = new EnhancedSingleItemApiLookup<>(FLUID_EXTRACTABLE_ID, ContextKey.NO_CONTEXT);
+	public static final EnhancedSingleItemApiLookup<ItemFluidExtractable, Void> ITEM_FLUID_EXTRACTABLE = new EnhancedSingleItemApiLookup<>(FLUID_EXTRACTABLE_ID, ContextKey.NO_CONTEXT);
 	public static final EnhancedItemApiLookup<FluidView, Void> ITEM_FLUID_VIEW = new EnhancedItemApiLookup<>(FLUID_VIEW_ID, ContextKey.NO_CONTEXT);
 
 	private FluidApiKeys(){}
