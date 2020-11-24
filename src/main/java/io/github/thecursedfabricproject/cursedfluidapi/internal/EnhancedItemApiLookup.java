@@ -3,7 +3,6 @@ package io.github.thecursedfabricproject.cursedfluidapi.internal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 import com.mojang.datafixers.util.Pair;
 
@@ -13,7 +12,6 @@ import org.jetbrains.annotations.Nullable;
 import net.fabricmc.fabric.api.provider.v1.ApiProviderMap;
 import net.fabricmc.fabric.api.provider.v1.ContextKey;
 import net.fabricmc.fabric.api.provider.v1.item.ItemApiLookup;
-import net.fabricmc.fabric.api.util.BooleanFunction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;

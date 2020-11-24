@@ -15,6 +15,7 @@ public class DefaultFluidAPIAdders implements ModInitializer {
         //Vanilla
         CauldronCompat.init();
         BucketCompat.init();
+        BottleComapt.init();
     }
     
 }

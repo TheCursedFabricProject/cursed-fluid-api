@@ -7,7 +7,6 @@ import io.github.thecursedfabricproject.cursedfluidapi.internal.EnhancedItemApiL
 import net.fabricmc.fabric.api.provider.v1.ContextKey;
 import net.fabricmc.fabric.api.provider.v1.block.BlockApiLookup;
 import net.fabricmc.fabric.api.provider.v1.block.BlockApiLookupRegistry;
-import net.fabricmc.fabric.api.provider.v1.item.ItemApiLookup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
