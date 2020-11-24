@@ -65,7 +65,7 @@ class CauldronCompat {
             }
 
             @Override
-            public long getFluidamount() {
+            public long getFluidAmount() {
                 return ((long)world.getBlockState(pos).get(CauldronBlock.LEVEL)) * FluidConstants.BOTTLE;
             }
             

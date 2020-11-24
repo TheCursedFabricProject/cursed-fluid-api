@@ -23,7 +23,7 @@ public class BottleComapt {
             }
 
             @Override
-            public long getFluidamount() {
+            public long getFluidAmount() {
                 return PotionUtil.getPotion(stack) == Potions.WATER ? FluidConstants.BOTTLE : 0;
             }
             

@@ -20,7 +20,7 @@ public class Example implements ModInitializer {
 			FluidView fluidView = FluidApiKeys.ITEM_FLUID_VIEW.get(stack, null);
 			if (fluidView == null) return;
 			lines.add(new LiteralText(fluidView.getFluidKey().toString()));
-			lines.add(new LiteralText(String.valueOf(fluidView.getFluidamount())));
+			lines.add(new LiteralText(String.valueOf(fluidView.getFluidAmount())));
 		});
 	}
     

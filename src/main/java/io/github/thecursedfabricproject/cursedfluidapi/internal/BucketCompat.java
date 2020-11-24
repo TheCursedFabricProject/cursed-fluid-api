@@ -22,7 +22,7 @@ public class BucketCompat {
             }
 
             @Override
-            public long getFluidamount() {
+            public long getFluidAmount() {
                 return getFluidKey() == Registry.FLUID.getId(Fluids.EMPTY) ? 0 : FluidConstants.BUCKET;
             }
                 

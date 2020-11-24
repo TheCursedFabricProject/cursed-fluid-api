@@ -34,7 +34,7 @@ public class LBACompat {
             SearchOptions.inDirection(Direction.EAST), SearchOptions.inDirection(Direction.WEST),
             SearchOptions.inDirection(Direction.NORTH), SearchOptions.inDirection(Direction.SOUTH));
 
-    private static final FluidAmount U_AMOUNT = FluidAmount.of(1, FluidConstants.BLOCK);
+    private static final FluidAmount U_AMOUNT = FluidAmount.of(1, FluidConstants.BUCKET);
     private static final FluidAmount LITER_AMOUNT = FluidAmount.of(1, 1000);
 
     private LBACompat() {
@@ -125,10 +125,10 @@ public class LBACompat {
             FluidKey lbaKey = getLBAFluidKey(fluidkey);
             if (lbaKey == null) return amount;
             FluidVolume b = insertable.attemptInsertion(lbaKey.withAmount(a), Simulation.SIMULATE);
-            long c = amount - b.amount().asLong(FluidConstants.BLOCK, RoundingMode.DOWN);
+            long c = amount - b.amount().asLong(FluidConstants.BUCKET, RoundingMode.DOWN);
             FluidAmount d = insertable.attemptInsertion(lbaKey.withAmount(U_AMOUNT.mul(c)), Simulation.SIMULATE).amount();
-            System.out.println(d.asLong(FluidConstants.BLOCK, RoundingMode.DOWN));
-            if (0 == d.asLong(FluidConstants.BLOCK, RoundingMode.DOWN)) {
+            System.out.println(d.asLong(FluidConstants.BUCKET, RoundingMode.DOWN));
+            if (0 == d.asLong(FluidConstants.BUCKET, RoundingMode.DOWN)) {
                 if (d.equals(insertable.attemptInsertion(lbaKey.withAmount(U_AMOUNT.mul(c)), simulation ? Simulation.SIMULATE : Simulation.ACTION).amount())) {
                     return amount - c;
                 } else {
