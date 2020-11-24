@@ -33,7 +33,7 @@ public class EnhancedItemApiLookup<T, C> implements ItemApiLookup<T, C> {
 	@Nullable
 	@Override
 	public T get(ItemStack stack, C context) {
-		Objects.requireNonNull(stack, "World cannot be null");
+		Objects.requireNonNull(stack, "Stack cannot be null");
 		// Providers have the final say whether a null context is allowed.
 
 		@SuppressWarnings("unchecked")

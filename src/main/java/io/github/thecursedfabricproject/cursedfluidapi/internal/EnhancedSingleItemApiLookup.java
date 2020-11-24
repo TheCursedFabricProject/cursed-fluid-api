@@ -1,5 +1,7 @@
 package io.github.thecursedfabricproject.cursedfluidapi.internal;
 
+import java.util.Objects;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.fabricmc.fabric.api.provider.v1.ContextKey;
@@ -14,6 +16,7 @@ public class EnhancedSingleItemApiLookup<T, C> extends EnhancedItemApiLookup<T, 
 
     @Override
     public @Nullable T get(ItemStack stack, C context) {
+        Objects.requireNonNull(stack, "Stack cannot be null");
         if (stack.getCount() != 1) throw new IllegalArgumentException("Stack: " + stack.toString() + " did not have a count of 1 :(");
         return super.get(stack, context);
     }
