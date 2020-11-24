@@ -77,7 +77,7 @@ public class LBACompat {
         }
 
         @Override
-        public long extractFluidAmount(long maxamount, Identifier fluidKey, boolean simulation) {
+        public long extractFluidAmount(long maxamount, boolean simulation) {
             long total = extractable.attemptAnyExtraction(FluidAmount.ABSOLUTE_MAXIMUM, Simulation.SIMULATE).amount().getCountOf(U_AMOUNT);
             long uExtractTarget = Math.min(total, maxamount);
             FluidAmount extractFluidAmount = U_AMOUNT.mul(uExtractTarget);

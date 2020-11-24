@@ -17,6 +17,7 @@ public class EnhancedSingleItemApiLookup<T, C> extends EnhancedItemApiLookup<T, 
     @Override
     public @Nullable T get(ItemStack stack, C context) {
         Objects.requireNonNull(stack, "Stack cannot be null");
+        if (stack.isEmpty()) return null;
         if (stack.getCount() != 1) throw new IllegalArgumentException("Stack: " + stack.toString() + " did not have a count of 1 :(");
         return super.get(stack, context);
     }

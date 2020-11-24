@@ -79,7 +79,7 @@ class CauldronCompat {
             }
 
             @Override
-            public long extractFluidAmount(long maxamount, Identifier fluidKey, boolean simulation) {
+            public long extractFluidAmount(long maxamount, boolean simulation) {
                 BlockState state = world.getBlockState(pos);
                 int level = state.get(CauldronBlock.LEVEL);
                 int maxExtractLevel = (int) MathHelper.clamp((long)Math.floor((double)maxamount / (double)FluidConstants.BOTTLE), 0l, 3l);

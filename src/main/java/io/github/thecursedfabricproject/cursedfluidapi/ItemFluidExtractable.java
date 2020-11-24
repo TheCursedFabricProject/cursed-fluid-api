@@ -12,5 +12,5 @@ public interface ItemFluidExtractable {
     /**
      * @return The ItemStack and Amount of fluid extracted or null if none was extracted
      */
-    public @Nullable Pair<ItemStack, Long> extractFluidAmount(long maxamount, Identifier fluidKey);
+    public @Nullable Pair<ItemStack, Long> extractFluidAmount(long maxamount);
 }

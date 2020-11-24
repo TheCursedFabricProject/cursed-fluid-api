@@ -40,7 +40,7 @@ public class BucketCompat {
             @Override
             public @Nullable Pair<ItemStack, Long> insertFluid(long amount, Identifier fluidkey) {
                 if (amount < FluidConstants.BUCKET) return null;
-                return new Pair<ItemStack,Long>(new ItemStack(Registry.FLUID.get(fluidkey).getBucketItem()), amount - FluidConstants.BUCKET);
+                return new Pair<>(new ItemStack(Registry.FLUID.get(fluidkey).getBucketItem()), amount - FluidConstants.BUCKET);
             }
             
         }, Items.BUCKET);

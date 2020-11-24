@@ -47,7 +47,7 @@ public class BottleCompat {
             }
 
             @Override
-            public Pair<ItemStack, Long> extractFluidAmount(long maxamount, Identifier fluidKey) {
+            public Pair<ItemStack, Long> extractFluidAmount(long maxamount) {
                 if (PotionUtil.getPotion(stack) != Potions.WATER)
                     return null;
                 if (maxamount < FluidConstants.BOTTLE)
