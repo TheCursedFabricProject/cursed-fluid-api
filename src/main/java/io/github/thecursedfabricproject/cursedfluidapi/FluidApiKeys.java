@@ -3,9 +3,11 @@ package io.github.thecursedfabricproject.cursedfluidapi;
 import org.jetbrains.annotations.NotNull;
 
 import io.github.thecursedfabricproject.cursedfluidapi.internal.EnhancedBlockApiLookup;
+import io.github.thecursedfabricproject.cursedfluidapi.internal.EnhancedItemApiLookup;
 import net.fabricmc.fabric.api.provider.v1.ContextKey;
 import net.fabricmc.fabric.api.provider.v1.block.BlockApiLookup;
 import net.fabricmc.fabric.api.provider.v1.block.BlockApiLookupRegistry;
+import net.fabricmc.fabric.api.provider.v1.item.ItemApiLookup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
@@ -17,6 +19,9 @@ public class FluidApiKeys {
 	public static final EnhancedBlockApiLookup<FluidInsertable, @NotNull Direction> SIDED_FLUID_INSERTABLE = new EnhancedBlockApiLookup<>(FLUID_INSERTABLE_ID, SIDED);
 	public static final EnhancedBlockApiLookup<FluidExtractable, @NotNull Direction> SIDED_FLUID_EXTRACTABLE = new EnhancedBlockApiLookup<>(FLUID_EXTRACTABLE_ID, SIDED);
 	public static final BlockApiLookup<FluidView, Void> BLOCK_FLUID_VIEW = BlockApiLookupRegistry.getLookup(FLUID_VIEW_ID, ContextKey.NO_CONTEXT);
+	public static final EnhancedItemApiLookup<FluidInsertable, Void> ITEM_FLUID_INSERTABLE = new EnhancedItemApiLookup<>(FLUID_INSERTABLE_ID, ContextKey.NO_CONTEXT);
+	public static final EnhancedItemApiLookup<FluidInsertable, Void> ITEM_FLUID_EXTRACTABLE = new EnhancedItemApiLookup<>(FLUID_EXTRACTABLE_ID, ContextKey.NO_CONTEXT);
+	public static final EnhancedItemApiLookup<FluidView, Void> ITEM_FLUID_VIEW = new EnhancedItemApiLookup<>(FLUID_VIEW_ID, ContextKey.NO_CONTEXT);
 
 	private FluidApiKeys(){}
 }

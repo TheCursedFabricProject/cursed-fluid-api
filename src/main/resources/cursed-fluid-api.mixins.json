@@ -4,6 +4,7 @@
   "package": "io.github.thecursedfabricproject.cursedfluidapi.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "BucketItemAccess"
   ],
   "client": [
   ],

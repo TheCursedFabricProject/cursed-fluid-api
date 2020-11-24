@@ -40,7 +40,7 @@ public class LBACompat {
     private LBACompat() {
     }
 
-    public static void addLBACompat() {
+    public static void init() {
         FluidApiKeys.SIDED_FLUID_EXTRACTABLE.registerFallback(
             (world, pos, side) -> new LBAFluidExtractable(FluidAttributes.EXTRACTABLE.get(world, pos, SearchOptions.inDirection(side.getOpposite()))),
             (world, pos) -> {
