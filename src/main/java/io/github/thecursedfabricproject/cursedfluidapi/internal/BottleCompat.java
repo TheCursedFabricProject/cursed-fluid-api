@@ -10,8 +10,8 @@ import net.minecraft.potion.Potions;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public class BottleComapt {
-    private BottleComapt() {
+public class BottleCompat {
+    private BottleCompat() {
     }
 
     public static void init() {
