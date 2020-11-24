@@ -41,26 +41,12 @@ public class LBACompat {
     }
 
     public static void init() {
-        FluidApiKeys.SIDED_FLUID_EXTRACTABLE.registerFallback(
-            (world, pos, side) -> new LBAFluidExtractable(FluidAttributes.EXTRACTABLE.get(world, pos, SearchOptions.inDirection(side.getOpposite()))),
-            (world, pos) -> {
-                for (SearchOptionDirectional<Object> directional : allDirections) {
-                    alexiil.mc.lib.attributes.fluid.FluidExtractable lbaextractable = FluidAttributes.EXTRACTABLE.get(world, pos, directional);
-                    if (lbaextractable != FluidAttributes.EXTRACTABLE.defaultValue) return true;
-                }
-                return false;
-            }
+        FluidApiKeys.SIDED_FLUID_EXTRACTABLE.registerBlockFallback(
+            (world, pos, side) -> new LBAFluidExtractable(FluidAttributes.EXTRACTABLE.get(world, pos, SearchOptions.inDirection(side.getOpposite())))
         );
 
-        FluidApiKeys.SIDED_FLUID_INSERTABLE.registerFallback(
-            (world, pos, side) -> new LBAFluidInsertable(FluidAttributes.INSERTABLE.get(world, pos, SearchOptions.inDirection(side.getOpposite()))),
-            (world, pos) -> {
-                for (SearchOptionDirectional<Object> directional : allDirections) {
-                    alexiil.mc.lib.attributes.fluid.FluidInsertable lbaextractable = FluidAttributes.INSERTABLE.get(world, pos, directional);
-                    if (lbaextractable != FluidAttributes.INSERTABLE.defaultValue) return true;
-                }
-                return false;
-            }
+        FluidApiKeys.SIDED_FLUID_INSERTABLE.registerBlockFallback(
+            (world, pos, side) -> new LBAFluidInsertable(FluidAttributes.INSERTABLE.get(world, pos, SearchOptions.inDirection(side.getOpposite())))
         );
     }
 
