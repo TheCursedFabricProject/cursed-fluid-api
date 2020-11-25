@@ -1,15 +1,12 @@
 package io.github.thecursedfabricproject.cursedfluidapi.internal.lba;
 
 import java.math.RoundingMode;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import alexiil.mc.lib.attributes.SearchOptionDirectional;
 import alexiil.mc.lib.attributes.SearchOptions;
 import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.fluid.FluidAttributes;
@@ -23,16 +20,10 @@ import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidInsertable;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 
 public class LBACompat {
     private static Logger screamAtModDeveloper = LogManager.getLogger("Cursed Fluid API LBACompat");
-
-    private static List<SearchOptionDirectional<Object>> allDirections = Arrays.asList(
-            SearchOptions.inDirection(Direction.UP), SearchOptions.inDirection(Direction.DOWN),
-            SearchOptions.inDirection(Direction.EAST), SearchOptions.inDirection(Direction.WEST),
-            SearchOptions.inDirection(Direction.NORTH), SearchOptions.inDirection(Direction.SOUTH));
 
     private static final FluidAmount U_AMOUNT = FluidAmount.of(1, FluidConstants.BUCKET);
     private static final FluidAmount LITER_AMOUNT = FluidAmount.of(1, 1000);
@@ -113,7 +104,6 @@ public class LBACompat {
             FluidVolume b = insertable.attemptInsertion(lbaKey.withAmount(a), Simulation.SIMULATE);
             long c = amount - b.amount().asLong(FluidConstants.BUCKET, RoundingMode.DOWN);
             FluidAmount d = insertable.attemptInsertion(lbaKey.withAmount(U_AMOUNT.mul(c)), Simulation.SIMULATE).amount();
-            System.out.println(d.asLong(FluidConstants.BUCKET, RoundingMode.DOWN));
             if (0 == d.asLong(FluidConstants.BUCKET, RoundingMode.DOWN)) {
                 if (d.equals(insertable.attemptInsertion(lbaKey.withAmount(U_AMOUNT.mul(c)), simulation ? Simulation.SIMULATE : Simulation.ACTION).amount())) {
                     return amount - c;
