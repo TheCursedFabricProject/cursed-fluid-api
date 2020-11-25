@@ -1,11 +1,9 @@
 package io.github.thecursedfabricproject.example;
 
-import com.mojang.datafixers.util.Pair;
-
 import io.github.thecursedfabricproject.cursedfluidapi.FluidApiKeys;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidConstants;
-import io.github.thecursedfabricproject.cursedfluidapi.ItemFluidExtractable;
-import io.github.thecursedfabricproject.cursedfluidapi.ItemFluidInsertable;
+import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
+import io.github.thecursedfabricproject.cursedfluidapi.FluidInteractionContext;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -41,22 +39,20 @@ public class BadTank extends Block implements BlockEntityProvider {
         if (!(e instanceof BadTankBlockEntity)) return ActionResult.PASS;
         ItemStack handItemStack = player.getStackInHand(hand);
         BadTankBlockEntity e1 = (BadTankBlockEntity) e;
-        ItemStack simulation_stack = handItemStack.copy();
-        simulation_stack.setCount(1);
-        ItemFluidExtractable extractable = FluidApiKeys.ITEM_FLUID_EXTRACTABLE.get(simulation_stack, null);
+        FluidInteractionContext context = new FluidInteractionContext(handItemStack);
+        FluidExtractable extractable = FluidApiKeys.ITEM_FLUID_EXTRACTABLE.get(handItemStack, context);
         if (extractable != null) {
             Identifier fluidKey = extractable.getFluidKey();
             if (e1.getFluidKey().equals(Registry.FLUID.getId(Fluids.EMPTY)) || fluidKey.equals(e1.getFluidKey())) {
-                Pair<ItemStack, Long> extracted = extractable.extractFluidAmount(FluidConstants.BUCKET - e1.getFluidAmount());
-                if (extracted != null) {
-                    long extracted_fluid = extracted.getSecond();
-                    ItemStack post_extract_stack = extracted.getFirst();
-                    if (extracted_fluid != 0l) {
-                        if (e1.insertFluid(extracted_fluid, fluidKey, true) ==  0l) {
-                            e1.insertFluid(extracted_fluid, fluidKey, false);
-                            handItemStack.decrement(1);
-                            player.inventory.offerOrDrop(world, post_extract_stack);
-                        }
+                long extracted = extractable.extractFluidAmount(FluidConstants.BUCKET - e1.getFluidAmount(), true);
+                if (e1.insertFluid(extracted, fluidKey, true) == 0l) {
+                    extractable.extractFluidAmount(FluidConstants.BUCKET - e1.getFluidAmount(), false);
+                    e1.insertFluid(extracted, fluidKey, false);
+                }
+                if (context.mainStackModified()) {
+                    player.setStackInHand(hand, context.getMainStack());
+                    for (ItemStack stack : context.getExtraStacks()) {
+                        player.inventory.offerOrDrop(world, stack);
                     }
                 }
             }

@@ -1,14 +1,10 @@
 package io.github.thecursedfabricproject.cursedfluidapi.internal;
 
-import com.mojang.datafixers.util.Pair;
-
-import org.jetbrains.annotations.Nullable;
-
 import io.github.thecursedfabricproject.cursedfluidapi.FluidApiKeys;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidConstants;
+import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
+import io.github.thecursedfabricproject.cursedfluidapi.FluidInsertable;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidView;
-import io.github.thecursedfabricproject.cursedfluidapi.ItemFluidExtractable;
-import io.github.thecursedfabricproject.cursedfluidapi.ItemFluidInsertable;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -38,7 +34,7 @@ public class BottleCompat {
 
         }, stack -> stack.getItem() instanceof PotionItem);
 
-        FluidApiKeys.ITEM_FLUID_EXTRACTABLE.registerFallback((stack, context) -> new ItemFluidExtractable() {
+        FluidApiKeys.ITEM_FLUID_EXTRACTABLE.registerFallback((stack, context) -> new FluidExtractable() {
 
             @Override
             public Identifier getFluidKey() {
@@ -47,23 +43,27 @@ public class BottleCompat {
             }
 
             @Override
-            public Pair<ItemStack, Long> extractFluidAmount(long maxamount) {
+            public long extractFluidAmount(long maxamount, boolean simulation) {
                 if (PotionUtil.getPotion(stack) != Potions.WATER)
-                    return null;
+                    return 0;
                 if (maxamount < FluidConstants.BOTTLE)
-                    return null;
-                return new Pair<>(new ItemStack(Items.GLASS_BOTTLE), FluidConstants.BOTTLE);
+                    return 0;
+                if (!simulation) context.getMainStack().decrement(1);
+                if (!simulation) context.addExtraStack(new ItemStack(Items.GLASS_BOTTLE));
+                return FluidConstants.BOTTLE;
             }
 
         }, stack -> stack.getItem() instanceof PotionItem);
 
-        FluidApiKeys.ITEM_FLUID_INSERTABLE.register((stack, context) -> new ItemFluidInsertable() {
+        FluidApiKeys.ITEM_FLUID_INSERTABLE.register((stack, context) -> new FluidInsertable() {
 
             @Override
-            public @Nullable Pair<ItemStack, Long> insertFluid(long amount, Identifier fluidkey) {
-                if (amount < FluidConstants.BOTTLE) return null;
-                if (fluidkey != Registry.FLUID.getId(Fluids.WATER)) return null;
-                return new Pair<>(new ItemStack(Items.POTION), amount - FluidConstants.BOTTLE);
+            public long insertFluid(long amount, Identifier fluidkey, boolean simulation) {
+                if (amount < FluidConstants.BOTTLE) return 0;
+                if (fluidkey != Registry.FLUID.getId(Fluids.WATER)) return 0;
+                if (!simulation) context.getMainStack().decrement(1);
+                if (!simulation) context.addExtraStack(new ItemStack(Items.POTION));
+                return amount - FluidConstants.BOTTLE;
             }
             
         }, Items.GLASS_BOTTLE);
