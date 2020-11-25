@@ -6,6 +6,7 @@ import io.github.thecursedfabricproject.cursedfluidapi.FluidInsertable;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidView;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
@@ -16,7 +17,7 @@ public class BadTankBlockEntity extends BlockEntity implements FluidInsertable, 
         super(Example.BAD_BLOCK_ENTITY);
     }
 
-    private Identifier fluidid = Registry.FLUID.getId(Fluids.EMPTY);
+    private Fluid fluid = Fluids.EMPTY;
     private long stored_amount = 0;
 
     @Override
@@ -25,8 +26,8 @@ public class BadTankBlockEntity extends BlockEntity implements FluidInsertable, 
     }
 
     @Override
-    public Identifier getFluidKey() {
-        return fluidid;
+    public Fluid getFluid() {
+        return fluid;
     }
 
     @Override
@@ -34,15 +35,15 @@ public class BadTankBlockEntity extends BlockEntity implements FluidInsertable, 
         long result = Math.min(stored_amount, maxamount);
         if (!simulation) {
             stored_amount -= result;
-            if (stored_amount == 0) fluidid = Registry.FLUID.getId(Fluids.EMPTY);
+            if (stored_amount == 0) fluid = Fluids.EMPTY;
         }
         return result;
     }
 
     @Override
-    public long insertFluid(long amount, Identifier fluidkey, boolean simulation) {
-        if (!(fluidid.equals(Registry.FLUID.getId(Fluids.EMPTY)) || fluidid.equals(fluidkey))) return amount;
-        if (!simulation) fluidid = fluidkey;
+    public long insertFluid(long amount, Fluid fluid2, boolean simulation) {
+        if (!(fluid.equals(Fluids.EMPTY) || fluid.equals(fluid2))) return amount;
+        if (!simulation) fluid = fluid2;
         long result = Math.max(amount - (FluidConstants.BUCKET - stored_amount), 0);
         long inserted = amount - result;
         if (!simulation) stored_amount += inserted;
@@ -52,7 +53,7 @@ public class BadTankBlockEntity extends BlockEntity implements FluidInsertable, 
     @Override
     public CompoundTag toTag(CompoundTag tag) {
         super.toTag(tag);
-        tag.putString("f", fluidid.toString());
+        tag.putString("f", Registry.FLUID.getId(fluid).toString());
         tag.putLong("a", stored_amount);
         return tag;
     }
@@ -60,7 +61,7 @@ public class BadTankBlockEntity extends BlockEntity implements FluidInsertable, 
     @Override
     public void fromTag(BlockState state, CompoundTag tag) {
         super.fromTag(state, tag);
-        fluidid = new Identifier(tag.getString("f"));
+        fluid = Registry.FLUID.get(new Identifier(tag.getString("f")));
         stored_amount = tag.getLong("a");
     }
 }

@@ -25,7 +25,7 @@ public class Example implements ModInitializer {
 		ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
 			FluidView fluidView = FluidApiKeys.ITEM_FLUID_VIEW.get(stack, null);
 			if (fluidView == null) return;
-			lines.add(new LiteralText(fluidView.getFluidKey().toString()));
+			lines.add(new LiteralText(fluidView.getFluid().toString()));
 			lines.add(new LiteralText(String.valueOf(fluidView.getFluidAmount())));
 		});
 

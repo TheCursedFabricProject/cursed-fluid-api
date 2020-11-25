@@ -8,10 +8,9 @@ import io.github.thecursedfabricproject.cursedfluidapi.FluidView;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CauldronBlock;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.registry.Registry;
 
 class CauldronCompat {
     private CauldronCompat() {}
@@ -19,8 +18,8 @@ class CauldronCompat {
         FluidApiKeys.SIDED_FLUID_INSERTABLE.registerForBlocks(
             (world, pos, side) -> new FluidInsertable(){
                     @Override
-                    public long insertFluid(long amount, Identifier fluidkey, boolean simulation) {
-                        if (!fluidkey.equals(Registry.FLUID.getId(Fluids.WATER))) return amount;
+                    public long insertFluid(long amount, Fluid fluid, boolean simulation) {
+                        if (!fluid.equals(Fluids.WATER)) return amount;
                         BlockState state = world.getBlockState(pos);
                         int originallevel = state.get(CauldronBlock.LEVEL);
                         int level = originallevel;
@@ -60,8 +59,8 @@ class CauldronCompat {
         FluidApiKeys.BLOCK_FLUID_VIEW.registerForBlocks((world, pos, side) -> new FluidView(){
 
             @Override
-            public Identifier getFluidKey() {
-                return world.getBlockState(pos).get(CauldronBlock.LEVEL) > 0 ? Registry.FLUID.getId(Fluids.WATER) : Registry.FLUID.getId(Fluids.EMPTY);
+            public Fluid getFluid() {
+                return world.getBlockState(pos).get(CauldronBlock.LEVEL) > 0 ? Fluids.WATER : Fluids.EMPTY;
             }
 
             @Override
@@ -74,8 +73,8 @@ class CauldronCompat {
         FluidApiKeys.SIDED_FLUID_EXTRACTABLE.registerForBlocks((world, pos, side) -> new FluidExtractable(){
 
             @Override
-            public Identifier getFluidKey() {
-                return world.getBlockState(pos).get(CauldronBlock.LEVEL) > 0 ? Registry.FLUID.getId(Fluids.WATER) : Registry.FLUID.getId(Fluids.EMPTY);
+            public Fluid getFluid() {
+                return world.getBlockState(pos).get(CauldronBlock.LEVEL) > 0 ? Fluids.WATER : Fluids.EMPTY;
             }
 
             @Override

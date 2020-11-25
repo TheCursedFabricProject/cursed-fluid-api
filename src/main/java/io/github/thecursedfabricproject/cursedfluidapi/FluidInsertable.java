@@ -1,7 +1,7 @@
 package io.github.thecursedfabricproject.cursedfluidapi;
 
-import net.minecraft.util.Identifier;
+import net.minecraft.fluid.Fluid;
 
 public interface FluidInsertable {
-    public long insertFluid(long amount, Identifier fluidkey, boolean simulation);
+    public long insertFluid(long amount, Fluid fluid, boolean simulation);
 }

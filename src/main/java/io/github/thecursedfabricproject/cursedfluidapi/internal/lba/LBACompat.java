@@ -1,8 +1,6 @@
 package io.github.thecursedfabricproject.cursedfluidapi.internal.lba;
 
 import java.math.RoundingMode;
-import java.util.HashMap;
-import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,8 +17,7 @@ import io.github.thecursedfabricproject.cursedfluidapi.FluidConstants;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidInsertable;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.fluid.Fluids;
 
 public class LBACompat {
     private static Logger screamAtModDeveloper = LogManager.getLogger("Cursed Fluid API LBACompat");
@@ -49,8 +46,9 @@ public class LBACompat {
         }
 
         @Override
-        public Identifier getFluidKey() {
-            return extractable.attemptAnyExtraction(FluidAmount.ABSOLUTE_MAXIMUM, Simulation.SIMULATE).getFluidKey().entry.getId();
+        public Fluid getFluid() {
+            Fluid fluid = extractable.attemptAnyExtraction(FluidAmount.ABSOLUTE_MAXIMUM, Simulation.SIMULATE).getFluidKey().getRawFluid();
+            return fluid == null ? Fluids.EMPTY : fluid;
         }
 
         @Override
@@ -79,16 +77,6 @@ public class LBACompat {
 
     }
 
-    private static HashMap<Identifier, FluidKey> fluidKeyLookup = new HashMap<>();
-
-    public static FluidKey getLBAFluidKey(Identifier id) {
-        return fluidKeyLookup.computeIfAbsent(id, yes -> {
-            Optional<Fluid> a = Registry.FLUID.getOrEmpty(id);
-            if (a.isPresent()) return FluidKeys.get(a.get());
-            return null;
-        });
-    }
-
     private static class LBAFluidInsertable implements FluidInsertable {
         private final alexiil.mc.lib.attributes.fluid.FluidInsertable insertable;
 
@@ -97,9 +85,9 @@ public class LBACompat {
         }
 
         @Override
-        public long insertFluid(long amount, Identifier fluidkey, boolean simulation) {
+        public long insertFluid(long amount, Fluid fluid, boolean simulation) {
             FluidAmount a = U_AMOUNT.mul(amount);
-            FluidKey lbaKey = getLBAFluidKey(fluidkey);
+            FluidKey lbaKey = FluidKeys.get(fluid);
             if (lbaKey == null) return amount;
             FluidVolume b = insertable.attemptInsertion(lbaKey.withAmount(a), Simulation.SIMULATE);
             long c = amount - b.amount().asLong(FluidConstants.BUCKET, RoundingMode.DOWN);

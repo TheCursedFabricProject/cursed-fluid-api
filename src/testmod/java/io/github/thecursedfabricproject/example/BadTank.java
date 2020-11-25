@@ -9,14 +9,13 @@ import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
@@ -42,12 +41,12 @@ public class BadTank extends Block implements BlockEntityProvider {
         FluidInteractionContext context = new FluidInteractionContext(handItemStack);
         FluidExtractable extractable = FluidApiKeys.ITEM_FLUID_EXTRACTABLE.get(handItemStack, context);
         if (extractable != null) {
-            Identifier fluidKey = extractable.getFluidKey();
-            if (e1.getFluidKey().equals(Registry.FLUID.getId(Fluids.EMPTY)) || fluidKey.equals(e1.getFluidKey())) {
+            Fluid fluid = extractable.getFluid();
+            if (e1.getFluid().equals(Fluids.EMPTY) || fluid.equals(e1.getFluid())) {
                 long extracted = extractable.extractFluidAmount(FluidConstants.BUCKET - e1.getFluidAmount(), true);
-                if (e1.insertFluid(extracted, fluidKey, true) == 0l) {
+                if (e1.insertFluid(extracted, fluid, true) == 0l) {
                     extractable.extractFluidAmount(FluidConstants.BUCKET - e1.getFluidAmount(), false);
-                    e1.insertFluid(extracted, fluidKey, false);
+                    e1.insertFluid(extracted, fluid, false);
                 }
                 if (context.mainStackModified()) {
                     player.setStackInHand(hand, context.getMainStack());

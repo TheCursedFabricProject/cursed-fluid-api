@@ -3,10 +3,11 @@ package io.github.thecursedfabricproject.example;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidApiKeys;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidConstants;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 /**
  * Yeets up to 2/3s of a bucket from a block on right click
@@ -21,10 +22,10 @@ public class YeetStick extends Item {
     public ActionResult useOnBlock(ItemUsageContext context) {
         FluidExtractable extractable = FluidApiKeys.SIDED_FLUID_EXTRACTABLE.get(context.getWorld(), context.getBlockPos(), context.getSide());
         if (extractable != null && !context.getWorld().isClient) {
-            Identifier fluidKey = extractable.getFluidKey();
+            Fluid fluid = extractable.getFluid();
             long extractedAmmount = extractable.extractFluidAmount(FluidConstants.BOTTLE * 2, false);
             if (extractedAmmount > 0) {
-                System.out.printf("Extracted %d %s%n", extractedAmmount, fluidKey.toString());
+                System.out.printf("Extracted %d %s%n", extractedAmmount, Registry.FLUID.getId(fluid).toString());
             }
             return ActionResult.SUCCESS;
         }

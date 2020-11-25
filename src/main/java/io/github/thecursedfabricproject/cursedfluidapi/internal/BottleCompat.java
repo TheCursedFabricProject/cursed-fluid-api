@@ -5,14 +5,13 @@ import io.github.thecursedfabricproject.cursedfluidapi.FluidConstants;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidInsertable;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidView;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.PotionItem;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public class BottleCompat {
     private BottleCompat() {
@@ -22,9 +21,8 @@ public class BottleCompat {
         FluidApiKeys.ITEM_FLUID_VIEW.registerFallback((stack, context) -> new FluidView() {
 
             @Override
-            public Identifier getFluidKey() {
-                return PotionUtil.getPotion(stack) == Potions.WATER ? Registry.FLUID.getId(Fluids.WATER)
-                        : Registry.FLUID.getId(Fluids.EMPTY);
+            public Fluid getFluid() {
+                return PotionUtil.getPotion(stack) == Potions.WATER ? Fluids.WATER : Fluids.EMPTY;
             }
 
             @Override
@@ -37,9 +35,8 @@ public class BottleCompat {
         FluidApiKeys.ITEM_FLUID_EXTRACTABLE.registerFallback((stack, context) -> new FluidExtractable() {
 
             @Override
-            public Identifier getFluidKey() {
-                return PotionUtil.getPotion(stack) == Potions.WATER ? Registry.FLUID.getId(Fluids.WATER)
-                        : Registry.FLUID.getId(Fluids.EMPTY);
+            public Fluid getFluid() {
+                return PotionUtil.getPotion(stack) == Potions.WATER ? Fluids.WATER : Fluids.EMPTY;
             }
 
             @Override
@@ -58,9 +55,9 @@ public class BottleCompat {
         FluidApiKeys.ITEM_FLUID_INSERTABLE.register((stack, context) -> new FluidInsertable() {
 
             @Override
-            public long insertFluid(long amount, Identifier fluidkey, boolean simulation) {
+            public long insertFluid(long amount, Fluid fluid, boolean simulation) {
                 if (amount < FluidConstants.BOTTLE) return 0;
-                if (fluidkey != Registry.FLUID.getId(Fluids.WATER)) return 0;
+                if (fluid != Fluids.WATER) return 0;
                 if (!simulation) context.getMainStack().decrement(1);
                 if (!simulation) context.addExtraStack(new ItemStack(Items.POTION));
                 return amount - FluidConstants.BOTTLE;
