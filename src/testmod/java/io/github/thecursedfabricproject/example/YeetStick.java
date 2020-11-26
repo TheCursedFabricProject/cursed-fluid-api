@@ -22,12 +22,14 @@ public class YeetStick extends Item {
     public ActionResult useOnBlock(ItemUsageContext context) {
         FluidExtractable extractable = FluidApiKeys.SIDED_FLUID_EXTRACTABLE.get(context.getWorld(), context.getBlockPos(), context.getSide());
         if (extractable != null && !context.getWorld().isClient) {
-            Fluid fluid = extractable.getFluid();
-            long extractedAmmount = extractable.extractFluidAmount(FluidConstants.BOTTLE * 2, false);
-            if (extractedAmmount > 0) {
-                System.out.printf("Extracted %d %s%n", extractedAmmount, Registry.FLUID.getId(fluid).toString());
+            if (extractable.getSlotCount() > 0) {
+                Fluid fluid = extractable.getFluid(0);
+                long extractedAmmount = extractable.extractFluidAmount(FluidConstants.BOTTLE * 2, fluid, false);
+                if (extractedAmmount > 0) {
+                    System.out.printf("Extracted %d %s%n", extractedAmmount, Registry.FLUID.getId(fluid).toString());
+                }
+                return ActionResult.SUCCESS;
             }
-            return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;
     }

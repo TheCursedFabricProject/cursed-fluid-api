@@ -19,15 +19,19 @@ public class BucketCompat {
         FluidApiKeys.ITEM_FLUID_VIEW.registerFallback((stack, context) -> {
             if (!(stack.getItem() instanceof BucketItem)) return null;
             return new FluidView() {
+                @Override
+                public int getSlotCount() {
+                    return 1;
+                }
 
                 @Override
-                public Fluid getFluid() {
+                public Fluid getFluid(int slot) {
                     return ((BucketItemAccess) stack.getItem()).getFluid();
                 }
     
                 @Override
-                public long getFluidAmount() {
-                    return getFluid() == Fluids.EMPTY ? 0 : FluidConstants.BUCKET;
+                public long getFluidAmount(int slot) {
+                    return getFluid(0) == Fluids.EMPTY ? 0 : FluidConstants.BUCKET;
                 }
     
             };

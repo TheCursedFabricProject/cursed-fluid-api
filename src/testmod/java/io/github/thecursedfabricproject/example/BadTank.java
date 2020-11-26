@@ -41,17 +41,19 @@ public class BadTank extends Block implements BlockEntityProvider {
         FluidInteractionContext context = new FluidInteractionContext(handItemStack);
         FluidExtractable extractable = FluidApiKeys.ITEM_FLUID_EXTRACTABLE.get(handItemStack, context);
         if (extractable != null) {
-            Fluid fluid = extractable.getFluid();
-            if (e1.getFluid().equals(Fluids.EMPTY) || fluid.equals(e1.getFluid())) {
-                long extracted = extractable.extractFluidAmount(FluidConstants.BUCKET - e1.getFluidAmount(), true);
-                if (e1.insertFluid(extracted, fluid, true) == 0l) {
-                    extractable.extractFluidAmount(FluidConstants.BUCKET - e1.getFluidAmount(), false);
-                    e1.insertFluid(extracted, fluid, false);
-                }
-                if (context.mainStackModified()) {
-                    player.setStackInHand(hand, context.getMainStack());
-                    for (ItemStack stack : context.getExtraStacks()) {
-                        player.inventory.offerOrDrop(world, stack);
+            if (extractable.getSlotCount() > 0) {
+                Fluid fluid = extractable.getFluid(0);
+                if (e1.getFluid(0).equals(Fluids.EMPTY) || fluid.equals(e1.getFluid(0))) {
+                    long extracted = extractable.extractFluidAmount(FluidConstants.BUCKET - e1.getFluidAmount(0), fluid, true);
+                    if (e1.insertFluid(extracted, fluid, true) == 0l) {
+                        extractable.extractFluidAmount(FluidConstants.BUCKET - e1.getFluidAmount(0), fluid, false);
+                        e1.insertFluid(extracted, fluid, false);
+                    }
+                    if (context.mainStackModified()) {
+                        player.setStackInHand(hand, context.getMainStack());
+                        for (ItemStack stack : context.getExtraStacks()) {
+                            player.inventory.offerOrDrop(world, stack);
+                        }
                     }
                 }
             }

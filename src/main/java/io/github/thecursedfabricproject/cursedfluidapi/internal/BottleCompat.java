@@ -21,14 +21,18 @@ public class BottleCompat {
         FluidApiKeys.ITEM_FLUID_VIEW.registerFallback((stack, context) -> {
             if (!(stack.getItem() instanceof PotionItem)) return null;
             return new FluidView() {
+                @Override
+                public int getSlotCount() {
+                    return 1;
+                }
 
                 @Override
-                public Fluid getFluid() {
+                public Fluid getFluid(int slot) {
                     return PotionUtil.getPotion(stack) == Potions.WATER ? Fluids.WATER : Fluids.EMPTY;
                 }
 
                 @Override
-                public long getFluidAmount() {
+                public long getFluidAmount(int slot) {
                     return PotionUtil.getPotion(stack) == Potions.WATER ? FluidConstants.BOTTLE : 0;
                 }
 
@@ -38,14 +42,23 @@ public class BottleCompat {
         FluidApiKeys.ITEM_FLUID_EXTRACTABLE.registerFallback((stack, context) -> {
             if (!(stack.getItem() instanceof PotionItem)) return null;
             return new FluidExtractable() {
+                @Override
+                public int getSlotCount() {
+                    return 1;
+                }
 
                 @Override
-                public Fluid getFluid() {
+                public long getFluidAmount(int slot) {
+                    return PotionUtil.getPotion(stack) == Potions.WATER ? FluidConstants.BOTTLE : 0;
+                }
+
+                @Override
+                public Fluid getFluid(int slot) {
                     return PotionUtil.getPotion(stack) == Potions.WATER ? Fluids.WATER : Fluids.EMPTY;
                 }
 
                 @Override
-                public long extractFluidAmount(long maxamount, boolean simulation) {
+                public long extractFluidAmount(long maxamount, Fluid fluid, boolean simulation) {
                     if (PotionUtil.getPotion(stack) != Potions.WATER)
                         return 0;
                     if (maxamount < FluidConstants.BOTTLE)

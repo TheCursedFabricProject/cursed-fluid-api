@@ -21,17 +21,18 @@ public class BadTankBlockEntity extends BlockEntity implements FluidInsertable, 
     private long stored_amount = 0;
 
     @Override
-    public long getFluidAmount() {
+    public long getFluidAmount(int slot) {
         return stored_amount;
     }
 
     @Override
-    public Fluid getFluid() {
+    public Fluid getFluid(int slot) {
         return fluid;
     }
 
     @Override
-    public long extractFluidAmount(long maxamount, boolean simulation) {
+    public long extractFluidAmount(long maxamount, Fluid fluid, boolean simulation) {
+        if (fluid != this.fluid) return 0;
         long result = Math.min(stored_amount, maxamount);
         if (!simulation) {
             stored_amount -= result;
@@ -63,5 +64,10 @@ public class BadTankBlockEntity extends BlockEntity implements FluidInsertable, 
         super.fromTag(state, tag);
         fluid = Registry.FLUID.get(new Identifier(tag.getString("f")));
         stored_amount = tag.getLong("a");
+    }
+
+    @Override
+    public int getSlotCount() {
+        return 1;
     }
 }

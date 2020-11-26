@@ -57,14 +57,18 @@ class CauldronCompat {
             Blocks.CAULDRON
         );
         FluidApiKeys.BLOCK_FLUID_VIEW.registerForBlocks((world, pos, side) -> new FluidView(){
+            @Override
+            public int getSlotCount() {
+                return 1;
+            }
 
             @Override
-            public Fluid getFluid() {
+            public Fluid getFluid(int slot) {
                 return world.getBlockState(pos).get(CauldronBlock.LEVEL) > 0 ? Fluids.WATER : Fluids.EMPTY;
             }
 
             @Override
-            public long getFluidAmount() {
+            public long getFluidAmount(int slot) {
                 return ((long)world.getBlockState(pos).get(CauldronBlock.LEVEL)) * FluidConstants.BOTTLE;
             }
             
@@ -73,12 +77,22 @@ class CauldronCompat {
         FluidApiKeys.SIDED_FLUID_EXTRACTABLE.registerForBlocks((world, pos, side) -> new FluidExtractable(){
 
             @Override
-            public Fluid getFluid() {
+            public int getSlotCount() {
+                return 1;
+            }
+
+            @Override
+            public Fluid getFluid(int slot) {
                 return world.getBlockState(pos).get(CauldronBlock.LEVEL) > 0 ? Fluids.WATER : Fluids.EMPTY;
             }
 
             @Override
-            public long extractFluidAmount(long maxamount, boolean simulation) {
+            public long getFluidAmount(int slot) {
+                return ((long)world.getBlockState(pos).get(CauldronBlock.LEVEL)) * FluidConstants.BOTTLE;
+            }
+
+            @Override
+            public long extractFluidAmount(long maxamount, Fluid fluid, boolean simulation) {
                 BlockState state = world.getBlockState(pos);
                 int level = state.get(CauldronBlock.LEVEL);
                 int maxExtractLevel = (int) MathHelper.clamp((long)Math.floor((double)maxamount / (double)FluidConstants.BOTTLE), 0l, 3l);

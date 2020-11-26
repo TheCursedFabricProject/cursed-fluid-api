@@ -46,13 +46,24 @@ public class LBACompat {
         }
 
         @Override
-        public Fluid getFluid() {
+        public int getSlotCount() {
+            return 1;
+        }
+
+        @Override
+        public Fluid getFluid(int slot) {
             Fluid fluid = extractable.attemptAnyExtraction(FluidAmount.ABSOLUTE_MAXIMUM, Simulation.SIMULATE).getFluidKey().getRawFluid();
             return fluid == null ? Fluids.EMPTY : fluid;
         }
 
         @Override
-        public long extractFluidAmount(long maxamount, boolean simulation) {
+        public long getFluidAmount(int slot) {
+            return extractFluidAmount(Integer.MAX_VALUE, getFluid(0), true);
+        }
+
+        @Override
+        public long extractFluidAmount(long maxamount, Fluid fluid, boolean simulation) {
+            if (fluid != getFluid(1)) return 0l;
             long total = extractable.attemptAnyExtraction(FluidAmount.ABSOLUTE_MAXIMUM, Simulation.SIMULATE).amount().getCountOf(U_AMOUNT);
             long uExtractTarget = Math.min(total, maxamount);
             FluidAmount extractFluidAmount = U_AMOUNT.mul(uExtractTarget);

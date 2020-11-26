@@ -2,7 +2,6 @@ package io.github.thecursedfabricproject.cursedfluidapi;
 
 import net.minecraft.fluid.Fluid;
 
-public interface FluidExtractable {
-    public Fluid getFluid();
-    public long extractFluidAmount(long maxamount, boolean simulation);
+public interface FluidExtractable extends FluidView {
+    public long extractFluidAmount(long maxamount, Fluid fluid, boolean simulation);
 }
