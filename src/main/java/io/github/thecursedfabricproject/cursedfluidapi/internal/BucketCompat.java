@@ -16,19 +16,22 @@ public class BucketCompat {
     }
 
     public static void init() {
-        FluidApiKeys.ITEM_FLUID_VIEW.registerFallback((stack, context) -> new FluidView() {
+        FluidApiKeys.ITEM_FLUID_VIEW.registerFallback((stack, context) -> {
+            if (!(stack.getItem() instanceof BucketItem)) return null;
+            return new FluidView() {
 
-            @Override
-            public Fluid getFluid() {
-                return ((BucketItemAccess) stack.getItem()).getFluid();
-            }
-
-            @Override
-            public long getFluidAmount() {
-                return getFluid() == Fluids.EMPTY ? 0 : FluidConstants.BUCKET;
-            }
-
-        }, stack -> stack.getItem() instanceof BucketItem);
+                @Override
+                public Fluid getFluid() {
+                    return ((BucketItemAccess) stack.getItem()).getFluid();
+                }
+    
+                @Override
+                public long getFluidAmount() {
+                    return getFluid() == Fluids.EMPTY ? 0 : FluidConstants.BUCKET;
+                }
+    
+            };
+        });
 
         FluidApiKeys.ITEM_FLUID_INSERTABLE.register((stack, context) -> new FluidInsertable() {
 

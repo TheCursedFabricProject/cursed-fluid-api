@@ -43,7 +43,7 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modImplementation("net.fabricmc.fabric-api:fabric-provider-api-v1:0.1.0+77d882103a") { transitive = false }
+	modImplementation("net.fabricmc.fabric-api:fabric-provider-api-v1:0.2.0+64c61d8e3a") { transitive = false }
 	modApi "alexiil.mc.lib:libblockattributes-all:0.8.4"
 
 	afterEvaluate {
