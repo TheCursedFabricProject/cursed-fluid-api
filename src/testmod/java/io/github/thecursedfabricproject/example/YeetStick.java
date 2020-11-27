@@ -3,6 +3,7 @@ package io.github.thecursedfabricproject.example;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidApiKeys;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidConstants;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
+import io.github.thecursedfabricproject.cursedfluidapi.FluidIO;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUsageContext;
@@ -20,8 +21,9 @@ public class YeetStick extends Item {
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        FluidExtractable extractable = FluidApiKeys.SIDED_FLUID_EXTRACTABLE.get(context.getWorld(), context.getBlockPos(), context.getSide());
-        if (extractable != null && !context.getWorld().isClient) {
+        FluidIO fluidIO = FluidApiKeys.SIDED_FLUID_IO.get(context.getWorld(), context.getBlockPos(), context.getSide());
+        if (fluidIO instanceof FluidExtractable && !context.getWorld().isClient) {
+            FluidExtractable extractable = (FluidExtractable) fluidIO;
             if (extractable.getSlotCount() > 0) {
                 Fluid fluid = extractable.getFluid(0);
                 long extractedAmmount = extractable.extractFluidAmount(FluidConstants.BOTTLE * 2, fluid, false);

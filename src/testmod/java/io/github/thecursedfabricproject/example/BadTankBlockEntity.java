@@ -2,8 +2,8 @@ package io.github.thecursedfabricproject.example;
 
 import io.github.thecursedfabricproject.cursedfluidapi.FluidConstants;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
+import io.github.thecursedfabricproject.cursedfluidapi.FluidIO;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidInsertable;
-import io.github.thecursedfabricproject.cursedfluidapi.FluidView;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.fluid.Fluid;
@@ -12,13 +12,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public class BadTankBlockEntity extends BlockEntity implements FluidInsertable, FluidExtractable, FluidView {
+public class BadTankBlockEntity extends BlockEntity implements FluidInsertable, FluidExtractable, FluidIO {
     public BadTankBlockEntity() {
         super(Example.BAD_BLOCK_ENTITY);
     }
 
     private Fluid fluid = Fluids.EMPTY;
     private long stored_amount = 0;
+    private int version = Integer.MIN_VALUE;
 
     @Override
     public long getFluidAmount(int slot) {
@@ -35,6 +36,7 @@ public class BadTankBlockEntity extends BlockEntity implements FluidInsertable, 
         if (fluid != this.fluid) return 0;
         long result = Math.min(stored_amount, maxamount);
         if (!simulation) {
+            version++;
             stored_amount -= result;
             if (stored_amount == 0) fluid = Fluids.EMPTY;
         }
@@ -48,6 +50,7 @@ public class BadTankBlockEntity extends BlockEntity implements FluidInsertable, 
         long result = Math.max(amount - (FluidConstants.BUCKET - stored_amount), 0);
         long inserted = amount - result;
         if (!simulation) stored_amount += inserted;
+        if (!simulation) version++;
         return result;
     }
 
@@ -69,5 +72,10 @@ public class BadTankBlockEntity extends BlockEntity implements FluidInsertable, 
     @Override
     public int getSlotCount() {
         return 1;
+    }
+
+    @Override
+    public int getVersion() {
+        return version;
     }
 }

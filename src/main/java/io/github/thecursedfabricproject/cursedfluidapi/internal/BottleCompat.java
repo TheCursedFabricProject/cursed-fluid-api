@@ -66,7 +66,7 @@ public class BottleCompat {
                     if (!simulation) context.getMainStack().decrement(1);
                     if (!simulation) context.addExtraStack(new ItemStack(Items.GLASS_BOTTLE));
                     return FluidConstants.BOTTLE;
-                };
+                }
             };
         });
 

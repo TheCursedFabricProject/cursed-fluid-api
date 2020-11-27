@@ -13,9 +13,7 @@ public class FluidApiKeys {
 	public static final Identifier FLUID_INSERTABLE_ID = new Identifier("cursed-fluid-api", "fluid_insertable");
 	public static final Identifier FLUID_EXTRACTABLE_ID = new Identifier("cursed-fluid-api", "fluid_extractable");
 	public static final Identifier FLUID_VIEW_ID = new Identifier("cursed-fluid-api", "fluid_view");
-	public static final BlockApiLookup<FluidInsertable, @NotNull Direction> SIDED_FLUID_INSERTABLE = BlockApiLookupRegistry.getLookup(FLUID_INSERTABLE_ID, FluidInsertable.class, Direction.class);
-	public static final BlockApiLookup<FluidExtractable, @NotNull Direction> SIDED_FLUID_EXTRACTABLE = BlockApiLookupRegistry.getLookup(FLUID_EXTRACTABLE_ID, FluidExtractable.class, Direction.class);
-	public static final BlockApiLookup<FluidView, Void> BLOCK_FLUID_VIEW = BlockApiLookupRegistry.getLookup(FLUID_VIEW_ID, FluidView.class, Void.class);
+	public static final BlockApiLookup<FluidIO, @NotNull Direction> SIDED_FLUID_IO = BlockApiLookupRegistry.getLookup(FLUID_INSERTABLE_ID, FluidIO.class, Direction.class);
 	public static final ItemApiLookup<FluidInsertable, FluidInteractionContext> ITEM_FLUID_INSERTABLE = ItemApiLookupRegistry.getLookup(FLUID_INSERTABLE_ID, FluidInsertable.class, FluidInteractionContext.class);
 	public static final ItemApiLookup<FluidExtractable, FluidInteractionContext> ITEM_FLUID_EXTRACTABLE = ItemApiLookupRegistry.getLookup(FLUID_EXTRACTABLE_ID, FluidExtractable.class, FluidInteractionContext.class);
 	public static final ItemApiLookup<FluidView, Void> ITEM_FLUID_VIEW = ItemApiLookupRegistry.getLookup(FLUID_VIEW_ID, FluidView.class, Void.class);

@@ -34,9 +34,7 @@ public class Example implements ModInitializer {
 		Registry.register(Registry.BLOCK, new Identifier("e", "bad"), BAD_TANK);
 		BAD_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "e:very_bad", BlockEntityType.Builder.create(BadTankBlockEntity::new, BAD_TANK).build(null));
 
-		FluidApiKeys.BLOCK_FLUID_VIEW.registerForBlockEntities((blockEntity, context) -> (BadTankBlockEntity) blockEntity, BAD_BLOCK_ENTITY);
-		FluidApiKeys.SIDED_FLUID_EXTRACTABLE.registerForBlockEntities((blockEntity, context) -> (BadTankBlockEntity) blockEntity, BAD_BLOCK_ENTITY);
-		FluidApiKeys.SIDED_FLUID_INSERTABLE.registerForBlockEntities((blockEntity, context) -> (BadTankBlockEntity) blockEntity, BAD_BLOCK_ENTITY);
+		FluidApiKeys.SIDED_FLUID_IO.registerForBlockEntities((blockEntity, context) -> (BadTankBlockEntity) blockEntity, BAD_BLOCK_ENTITY);
 	}
     
 }

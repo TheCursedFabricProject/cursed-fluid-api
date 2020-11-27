@@ -15,6 +15,7 @@ import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidApiKeys;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidConstants;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
+import io.github.thecursedfabricproject.cursedfluidapi.FluidIO;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidInsertable;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
@@ -29,20 +30,24 @@ public class LBACompat {
     }
 
     public static void init() {
-        FluidApiKeys.SIDED_FLUID_EXTRACTABLE.registerBlockFallback(
-            (world, pos, side) -> new LBAFluidExtractable(FluidAttributes.EXTRACTABLE.get(world, pos, SearchOptions.inDirection(side.getOpposite())))
-        );
+        FluidApiKeys.SIDED_FLUID_IO.registerBlockFallback((world, pos, side) -> new LBAFluidIO(FluidAttributes.EXTRACTABLE.get(world, pos, SearchOptions.inDirection(side.getOpposite())), FluidAttributes.INSERTABLE.get(world, pos, SearchOptions.inDirection(side.getOpposite()))));
 
-        FluidApiKeys.SIDED_FLUID_INSERTABLE.registerBlockFallback(
-            (world, pos, side) -> new LBAFluidInsertable(FluidAttributes.INSERTABLE.get(world, pos, SearchOptions.inDirection(side.getOpposite())))
-        );
     }
 
-    private static class LBAFluidExtractable implements FluidExtractable {
+    private static class LBAFluidIO implements FluidExtractable, FluidInsertable, FluidIO {
         private final alexiil.mc.lib.attributes.fluid.FluidExtractable extractable;
+        private final alexiil.mc.lib.attributes.fluid.FluidInsertable insertable;
 
-        public LBAFluidExtractable(alexiil.mc.lib.attributes.fluid.FluidExtractable extractable) {
+        public LBAFluidIO(alexiil.mc.lib.attributes.fluid.FluidExtractable extractable, alexiil.mc.lib.attributes.fluid.FluidInsertable insertable) {
             this.extractable = extractable;
+            this.insertable = insertable;
+        }
+
+        int version = 0;
+
+        @Override
+        public int getVersion() {
+            return version++;
         }
 
         @Override
@@ -86,15 +91,6 @@ public class LBACompat {
             return 0;
         }
 
-    }
-
-    private static class LBAFluidInsertable implements FluidInsertable {
-        private final alexiil.mc.lib.attributes.fluid.FluidInsertable insertable;
-
-        public LBAFluidInsertable(alexiil.mc.lib.attributes.fluid.FluidInsertable insertable) {
-            this.insertable = insertable;
-        }
-
         @Override
         public long insertFluid(long amount, Fluid fluid, boolean simulation) {
             FluidAmount a = U_AMOUNT.mul(amount);
@@ -113,6 +109,5 @@ public class LBACompat {
             return amount;
         }
 
-        
     }
 }
