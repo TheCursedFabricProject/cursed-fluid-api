@@ -14,7 +14,6 @@ import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidApiKeys;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidConstants;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
-import io.github.thecursedfabricproject.cursedfluidapi.FluidIO;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidInsertable;
 import io.github.thecursedfabricproject.cursedfluidapi.Simulation;
 import net.minecraft.fluid.Fluid;
@@ -34,7 +33,7 @@ public class LBACompat {
 
     }
 
-    private static class LBAFluidIO implements FluidExtractable, FluidInsertable, FluidIO {
+    private static class LBAFluidIO implements FluidExtractable, FluidInsertable {
         private final alexiil.mc.lib.attributes.fluid.FluidExtractable extractable;
         private final alexiil.mc.lib.attributes.fluid.FluidInsertable insertable;
 

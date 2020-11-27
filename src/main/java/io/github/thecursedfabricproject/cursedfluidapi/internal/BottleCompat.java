@@ -23,6 +23,11 @@ public class BottleCompat {
             if (!(stack.getItem() instanceof PotionItem)) return null;
             return new FluidView() {
                 @Override
+                public int getVersion() {
+                    return PotionUtil.getPotion(stack) == Potions.WATER ? 1 : 0;
+                }
+
+                @Override
                 public int getFluidSlotCount() {
                     return 1;
                 }
@@ -43,6 +48,11 @@ public class BottleCompat {
         FluidApiKeys.ITEM_FLUID_EXTRACTABLE.registerFallback((stack, context) -> {
             if (!(stack.getItem() instanceof PotionItem)) return null;
             return new FluidExtractable() {
+                @Override
+                public int getVersion() {
+                    return PotionUtil.getPotion(stack) == Potions.WATER ? 1 : 0;
+                }
+
                 @Override
                 public int getFluidSlotCount() {
                     return 1;

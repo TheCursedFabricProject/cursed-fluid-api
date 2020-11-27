@@ -12,6 +12,7 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.registry.Registry;
 
 public class BucketCompat {
     private BucketCompat() {
@@ -21,6 +22,11 @@ public class BucketCompat {
         FluidApiKeys.ITEM_FLUID_VIEW.registerFallback((stack, context) -> {
             if (!(stack.getItem() instanceof BucketItem)) return null;
             return new FluidView() {
+                @Override
+                public int getVersion() {
+                    return Registry.FLUID.getRawId(getFluid(0));
+                }
+
                 @Override
                 public int getFluidSlotCount() {
                     return 1;
@@ -42,6 +48,11 @@ public class BucketCompat {
         FluidApiKeys.ITEM_FLUID_EXTRACTABLE.registerFallback((stack, context) -> {
             if (!(stack.getItem() instanceof BucketItem)) return null;
             return new FluidExtractable() {
+                @Override
+                public int getVersion() {
+                    return Registry.FLUID.getRawId(getFluid(0));
+                }
+
                 @Override
                 public int getFluidSlotCount() {
                     return 1;

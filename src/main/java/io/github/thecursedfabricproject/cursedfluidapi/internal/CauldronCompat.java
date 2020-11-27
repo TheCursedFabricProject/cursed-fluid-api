@@ -3,7 +3,6 @@ package io.github.thecursedfabricproject.cursedfluidapi.internal;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidApiKeys;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidConstants;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
-import io.github.thecursedfabricproject.cursedfluidapi.FluidIO;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidInsertable;
 import io.github.thecursedfabricproject.cursedfluidapi.Simulation;
 import net.minecraft.block.BlockState;
@@ -21,7 +20,7 @@ class CauldronCompat {
         FluidApiKeys.SIDED_FLUID_IO.registerForBlocks((world, pos, side) -> new CauldronFluidIO(world, pos), Blocks.CAULDRON);
     }
 
-    private static class CauldronFluidIO implements FluidIO, FluidExtractable, FluidInsertable {
+    private static class CauldronFluidIO implements FluidExtractable, FluidInsertable {
         private final World world;
         private final BlockPos pos;
         public CauldronFluidIO(World world, BlockPos pos) {
