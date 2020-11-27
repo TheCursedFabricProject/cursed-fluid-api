@@ -5,6 +5,7 @@ import io.github.thecursedfabricproject.cursedfluidapi.FluidConstants;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidInsertable;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidView;
+import io.github.thecursedfabricproject.cursedfluidapi.Simulation;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
@@ -22,7 +23,7 @@ public class BottleCompat {
             if (!(stack.getItem() instanceof PotionItem)) return null;
             return new FluidView() {
                 @Override
-                public int getSlotCount() {
+                public int getFluidSlotCount() {
                     return 1;
                 }
 
@@ -43,7 +44,7 @@ public class BottleCompat {
             if (!(stack.getItem() instanceof PotionItem)) return null;
             return new FluidExtractable() {
                 @Override
-                public int getSlotCount() {
+                public int getFluidSlotCount() {
                     return 1;
                 }
 
@@ -58,13 +59,13 @@ public class BottleCompat {
                 }
 
                 @Override
-                public long extractFluidAmount(long maxamount, Fluid fluid, boolean simulation) {
+                public long extractFluidAmount(long maxamount, Fluid fluid, Simulation simulation) {
                     if (PotionUtil.getPotion(stack) != Potions.WATER)
                         return 0;
                     if (maxamount < FluidConstants.BOTTLE)
                         return 0;
-                    if (!simulation) context.getMainStack().decrement(1);
-                    if (!simulation) context.addExtraStack(new ItemStack(Items.GLASS_BOTTLE));
+                    if (simulation.isAct()) context.getMainStack().decrement(1);
+                    if (simulation.isAct()) context.addExtraStack(new ItemStack(Items.GLASS_BOTTLE));
                     return FluidConstants.BOTTLE;
                 }
             };
@@ -73,11 +74,11 @@ public class BottleCompat {
         FluidApiKeys.ITEM_FLUID_INSERTABLE.register((stack, context) -> new FluidInsertable() {
 
             @Override
-            public long insertFluid(long amount, Fluid fluid, boolean simulation) {
+            public long insertFluid(long amount, Fluid fluid, Simulation simulation) {
                 if (amount < FluidConstants.BOTTLE) return 0;
                 if (fluid != Fluids.WATER) return 0;
-                if (!simulation) context.getMainStack().decrement(1);
-                if (!simulation) context.addExtraStack(new ItemStack(Items.POTION));
+                if (simulation.isAct()) context.getMainStack().decrement(1);
+                if (simulation.isAct()) context.addExtraStack(new ItemStack(Items.POTION));
                 return amount - FluidConstants.BOTTLE;
             }
             

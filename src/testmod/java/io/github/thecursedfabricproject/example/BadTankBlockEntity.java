@@ -4,6 +4,7 @@ import io.github.thecursedfabricproject.cursedfluidapi.FluidConstants;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidIO;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidInsertable;
+import io.github.thecursedfabricproject.cursedfluidapi.Simulation;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.fluid.Fluid;
@@ -32,25 +33,25 @@ public class BadTankBlockEntity extends BlockEntity implements FluidInsertable, 
     }
 
     @Override
-    public long extractFluidAmount(long maxamount, Fluid fluid, boolean simulation) {
+    public long extractFluidAmount(long maxamount, Fluid fluid, Simulation simulation) {
         if (fluid != this.fluid) return 0;
         long result = Math.min(stored_amount, maxamount);
-        if (!simulation) {
+        if (simulation.isAct()) {
             version++;
             stored_amount -= result;
-            if (stored_amount == 0) fluid = Fluids.EMPTY;
+            if (stored_amount == 0) this.fluid = Fluids.EMPTY;
         }
         return result;
     }
 
     @Override
-    public long insertFluid(long amount, Fluid fluid2, boolean simulation) {
+    public long insertFluid(long amount, Fluid fluid2, Simulation simulation) {
         if (!(fluid.equals(Fluids.EMPTY) || fluid.equals(fluid2))) return amount;
-        if (!simulation) fluid = fluid2;
+        if (simulation.isAct()) fluid = fluid2;
         long result = Math.max(amount - (FluidConstants.BUCKET - stored_amount), 0);
         long inserted = amount - result;
-        if (!simulation) stored_amount += inserted;
-        if (!simulation) version++;
+        if (simulation.isAct()) stored_amount += inserted;
+        if (simulation.isAct()) version++;
         return result;
     }
 
@@ -70,7 +71,7 @@ public class BadTankBlockEntity extends BlockEntity implements FluidInsertable, 
     }
 
     @Override
-    public int getSlotCount() {
+    public int getFluidSlotCount() {
         return 1;
     }
 

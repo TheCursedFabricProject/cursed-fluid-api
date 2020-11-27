@@ -5,6 +5,7 @@ import io.github.thecursedfabricproject.cursedfluidapi.FluidConstants;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidInsertable;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidView;
+import io.github.thecursedfabricproject.cursedfluidapi.Simulation;
 import io.github.thecursedfabricproject.cursedfluidapi.mixin.BucketItemAccess;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
@@ -21,7 +22,7 @@ public class BucketCompat {
             if (!(stack.getItem() instanceof BucketItem)) return null;
             return new FluidView() {
                 @Override
-                public int getSlotCount() {
+                public int getFluidSlotCount() {
                     return 1;
                 }
 
@@ -42,7 +43,7 @@ public class BucketCompat {
             if (!(stack.getItem() instanceof BucketItem)) return null;
             return new FluidExtractable() {
                 @Override
-                public int getSlotCount() {
+                public int getFluidSlotCount() {
                     return 1;
                 }
 
@@ -57,10 +58,10 @@ public class BucketCompat {
                 }
 
                 @Override
-                public long extractFluidAmount(long maxamount, Fluid fluid, boolean simulation) {
+                public long extractFluidAmount(long maxamount, Fluid fluid, Simulation simulation) {
                     Fluid selfFluid = getFluid(0);
                     if (!selfFluid.equals(fluid) || selfFluid.equals(Fluids.EMPTY)) return 0;
-                    if (!simulation) context.setMainStack(new ItemStack(Items.BUCKET));
+                    if (simulation.isAct()) context.setMainStack(new ItemStack(Items.BUCKET));
                     return FluidConstants.BUCKET;
                 }
     
@@ -70,10 +71,10 @@ public class BucketCompat {
         FluidApiKeys.ITEM_FLUID_INSERTABLE.register((stack, context) -> new FluidInsertable() {
 
             @Override
-            public long insertFluid(long amount, Fluid fluid, boolean simulation) {
+            public long insertFluid(long amount, Fluid fluid, Simulation simulation) {
                 if (amount < FluidConstants.BUCKET) return amount;
-                if (!simulation) context.getMainStack().decrement(1);
-                if (!simulation) context.addExtraStack(new ItemStack(fluid.getBucketItem()));
+                if (simulation.isAct()) context.getMainStack().decrement(1);
+                if (simulation.isAct()) context.addExtraStack(new ItemStack(fluid.getBucketItem()));
                 return amount - FluidConstants.BUCKET;
             }
             

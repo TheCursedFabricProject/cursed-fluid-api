@@ -18,7 +18,7 @@ public class MeasuringStick extends Item {
         FluidIO fluidIO = FluidApiKeys.SIDED_FLUID_IO.get(context.getWorld(), context.getBlockPos(), context.getSide());
         if (fluidIO instanceof FluidView && !context.getWorld().isClient) {
             FluidView view = (FluidView) fluidIO;
-            for (int i = 0; i < view.getSlotCount(); i++) {
+            for (int i = 0; i < view.getFluidSlotCount(); i++) {
                 System.out.println(view.getFluid(i));
                 System.out.println(view.getFluidAmount(i));
             }

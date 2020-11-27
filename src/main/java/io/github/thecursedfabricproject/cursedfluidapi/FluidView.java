@@ -3,7 +3,7 @@ package io.github.thecursedfabricproject.cursedfluidapi;
 import net.minecraft.fluid.Fluid;
 
 public interface FluidView {
-    int getSlotCount();
+    int getFluidSlotCount();
 
     public Fluid getFluid(int slot);
     

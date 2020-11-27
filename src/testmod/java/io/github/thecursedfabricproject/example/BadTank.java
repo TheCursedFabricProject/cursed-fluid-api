@@ -4,6 +4,7 @@ import io.github.thecursedfabricproject.cursedfluidapi.FluidApiKeys;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidConstants;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidInteractionContext;
+import io.github.thecursedfabricproject.cursedfluidapi.Simulation;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -41,13 +42,13 @@ public class BadTank extends Block implements BlockEntityProvider {
         FluidInteractionContext context = new FluidInteractionContext(handItemStack);
         FluidExtractable extractable = FluidApiKeys.ITEM_FLUID_EXTRACTABLE.get(handItemStack, context);
         if (extractable != null) {
-            if (extractable.getSlotCount() > 0) {
+            if (extractable.getFluidSlotCount() > 0) {
                 Fluid fluid = extractable.getFluid(0);
                 if (e1.getFluid(0).equals(Fluids.EMPTY) || fluid.equals(e1.getFluid(0))) {
-                    long extracted = extractable.extractFluidAmount(FluidConstants.BUCKET - e1.getFluidAmount(0), fluid, true);
-                    if (e1.insertFluid(extracted, fluid, true) == 0l) {
-                        extractable.extractFluidAmount(FluidConstants.BUCKET - e1.getFluidAmount(0), fluid, false);
-                        e1.insertFluid(extracted, fluid, false);
+                    long extracted = extractable.extractFluidAmount(FluidConstants.BUCKET - e1.getFluidAmount(0), fluid, Simulation.SIMULATE);
+                    if (e1.insertFluid(extracted, fluid, Simulation.SIMULATE) == 0l) {
+                        extractable.extractFluidAmount(FluidConstants.BUCKET - e1.getFluidAmount(0), fluid, Simulation.ACT);
+                        e1.insertFluid(extracted, fluid, Simulation.ACT);
                     }
                     if (context.mainStackModified()) {
                         player.setStackInHand(hand, context.getMainStack());

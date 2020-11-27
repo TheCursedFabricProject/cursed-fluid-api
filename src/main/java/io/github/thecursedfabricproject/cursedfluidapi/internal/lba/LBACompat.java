@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import alexiil.mc.lib.attributes.SearchOptions;
-import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.fluid.FluidAttributes;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
@@ -17,6 +16,7 @@ import io.github.thecursedfabricproject.cursedfluidapi.FluidConstants;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidIO;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidInsertable;
+import io.github.thecursedfabricproject.cursedfluidapi.Simulation;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 
@@ -51,29 +51,29 @@ public class LBACompat {
         }
 
         @Override
-        public int getSlotCount() {
+        public int getFluidSlotCount() {
             return 1;
         }
 
         @Override
         public Fluid getFluid(int slot) {
-            Fluid fluid = extractable.attemptAnyExtraction(FluidAmount.ABSOLUTE_MAXIMUM, Simulation.SIMULATE).getFluidKey().getRawFluid();
+            Fluid fluid = extractable.attemptAnyExtraction(FluidAmount.ABSOLUTE_MAXIMUM, alexiil.mc.lib.attributes.Simulation.SIMULATE).getFluidKey().getRawFluid();
             return fluid == null ? Fluids.EMPTY : fluid;
         }
 
         @Override
         public long getFluidAmount(int slot) {
-            return extractFluidAmount(Integer.MAX_VALUE, getFluid(0), true);
+            return extractFluidAmount(Integer.MAX_VALUE, getFluid(0), Simulation.SIMULATE);
         }
 
         @Override
-        public long extractFluidAmount(long maxamount, Fluid fluid, boolean simulation) {
+        public long extractFluidAmount(long maxamount, Fluid fluid, Simulation simulation) {
             if (fluid != getFluid(1)) return 0l;
-            long total = extractable.attemptAnyExtraction(FluidAmount.ABSOLUTE_MAXIMUM, Simulation.SIMULATE).amount().getCountOf(U_AMOUNT);
+            long total = extractable.attemptAnyExtraction(FluidAmount.ABSOLUTE_MAXIMUM, alexiil.mc.lib.attributes.Simulation.SIMULATE).amount().getCountOf(U_AMOUNT);
             long uExtractTarget = Math.min(total, maxamount);
             FluidAmount extractFluidAmount = U_AMOUNT.mul(uExtractTarget);
-            if (extractFluidAmount.equals(extractable.attemptAnyExtraction(extractFluidAmount, Simulation.SIMULATE).amount())) {
-                if (extractFluidAmount.equals(extractable.attemptAnyExtraction(extractFluidAmount, simulation ? Simulation.SIMULATE : Simulation.ACTION).amount())) {
+            if (extractFluidAmount.equals(extractable.attemptAnyExtraction(extractFluidAmount, alexiil.mc.lib.attributes.Simulation.SIMULATE).amount())) {
+                if (extractFluidAmount.equals(extractable.attemptAnyExtraction(extractFluidAmount, simulation.isSimulate() ? alexiil.mc.lib.attributes.Simulation.SIMULATE : alexiil.mc.lib.attributes.Simulation.ACTION).amount())) {
                     return uExtractTarget;
                 } else {
                     screamAtModDeveloper.warn("{} Did something very strange (Error 0)", extractable.getClass());
@@ -81,8 +81,8 @@ public class LBACompat {
             }
             long literExtractTarget = Math.min(total, maxamount/81);
             extractFluidAmount = LITER_AMOUNT.mul(literExtractTarget);
-            if (extractFluidAmount.equals(extractable.attemptAnyExtraction(extractFluidAmount, Simulation.SIMULATE).amount())) {
-                if (extractFluidAmount.equals(extractable.attemptAnyExtraction(extractFluidAmount, simulation ? Simulation.SIMULATE : Simulation.ACTION).amount())) {
+            if (extractFluidAmount.equals(extractable.attemptAnyExtraction(extractFluidAmount, alexiil.mc.lib.attributes.Simulation.SIMULATE).amount())) {
+                if (extractFluidAmount.equals(extractable.attemptAnyExtraction(extractFluidAmount, simulation.isSimulate() ? alexiil.mc.lib.attributes.Simulation.SIMULATE : alexiil.mc.lib.attributes.Simulation.ACTION).amount())) {
                     return literExtractTarget * 81;
                 } else {
                     screamAtModDeveloper.warn("{} Did something very strange (Error 0)", extractable.getClass());
@@ -92,15 +92,15 @@ public class LBACompat {
         }
 
         @Override
-        public long insertFluid(long amount, Fluid fluid, boolean simulation) {
+        public long insertFluid(long amount, Fluid fluid, Simulation simulation) {
             FluidAmount a = U_AMOUNT.mul(amount);
             FluidKey lbaKey = FluidKeys.get(fluid);
             if (lbaKey == null) return amount;
-            FluidVolume b = insertable.attemptInsertion(lbaKey.withAmount(a), Simulation.SIMULATE);
+            FluidVolume b = insertable.attemptInsertion(lbaKey.withAmount(a), alexiil.mc.lib.attributes.Simulation.SIMULATE);
             long c = amount - b.amount().asLong(FluidConstants.BUCKET, RoundingMode.DOWN);
-            FluidAmount d = insertable.attemptInsertion(lbaKey.withAmount(U_AMOUNT.mul(c)), Simulation.SIMULATE).amount();
+            FluidAmount d = insertable.attemptInsertion(lbaKey.withAmount(U_AMOUNT.mul(c)), alexiil.mc.lib.attributes.Simulation.SIMULATE).amount();
             if (0 == d.asLong(FluidConstants.BUCKET, RoundingMode.DOWN)) {
-                if (d.equals(insertable.attemptInsertion(lbaKey.withAmount(U_AMOUNT.mul(c)), simulation ? Simulation.SIMULATE : Simulation.ACTION).amount())) {
+                if (d.equals(insertable.attemptInsertion(lbaKey.withAmount(U_AMOUNT.mul(c)), simulation.isSimulate() ? alexiil.mc.lib.attributes.Simulation.SIMULATE : alexiil.mc.lib.attributes.Simulation.ACTION).amount())) {
                     return amount - c;
                 } else {
                     screamAtModDeveloper.warn("{} Did something very strange (Error 1)", insertable.getClass());

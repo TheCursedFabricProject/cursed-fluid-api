@@ -5,6 +5,7 @@ import io.github.thecursedfabricproject.cursedfluidapi.FluidConstants;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidExtractable;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidIO;
 import io.github.thecursedfabricproject.cursedfluidapi.FluidInsertable;
+import io.github.thecursedfabricproject.cursedfluidapi.Simulation;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CauldronBlock;
@@ -29,7 +30,7 @@ class CauldronCompat {
         }
 
         @Override
-        public long insertFluid(long amount, Fluid fluid, boolean simulation) {
+        public long insertFluid(long amount, Fluid fluid, Simulation simulation) {
             if (!fluid.equals(Fluids.WATER)) return amount;
             BlockState state = world.getBlockState(pos);
             int originallevel = state.get(CauldronBlock.LEVEL);
@@ -48,7 +49,7 @@ class CauldronCompat {
                     amount -= FluidConstants.BOTTLE;
                     level += 1;
                 } else {
-                    if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
+                    if (simulation.isAct()) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
                     return amount;
                 }
             }
@@ -57,16 +58,16 @@ class CauldronCompat {
                     amount -= FluidConstants.BOTTLE;
                     level += 1;
                 } else {
-                    if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
+                    if (simulation.isAct()) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
                     return amount;
                 }
             }
-            if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
+            if (simulation.isAct()) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
             return amount;
         }
 
         @Override
-        public int getSlotCount() {
+        public int getFluidSlotCount() {
             return 1;
         }
 
@@ -81,13 +82,13 @@ class CauldronCompat {
         }
 
         @Override
-        public long extractFluidAmount(long maxamount, Fluid fluid, boolean simulation) {
+        public long extractFluidAmount(long maxamount, Fluid fluid, Simulation simulation) {
             BlockState state = world.getBlockState(pos);
             int level = state.get(CauldronBlock.LEVEL);
             int maxExtractLevel = (int) MathHelper.clamp((long)Math.floor((double)maxamount / (double)FluidConstants.BOTTLE), 0l, 3l);
             int extractLevel = MathHelper.clamp(level, 0, maxExtractLevel);
             level -= extractLevel;
-            if (!simulation) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
+            if (simulation.isAct()) ((CauldronBlock)state.getBlock()).setLevel(world, pos, state, level);
             return extractLevel * FluidConstants.BOTTLE;
         }
 
